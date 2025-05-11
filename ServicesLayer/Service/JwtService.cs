@@ -7,10 +7,11 @@ using InfrastructureLayer.Options;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using DomainLayer.Enums;
+using System.Diagnostics;
 
 namespace InfrastructureLayer.Service
 {
-    internal class JwtService : IJwtService
+    public class JwtService : IJwtService
     {
         private readonly JwtOptions _jwtOptions;
 
@@ -18,6 +19,7 @@ namespace InfrastructureLayer.Service
         {
             _jwtOptions = jwtOptions.Value;
         }
+
 
         public string GenerateToken(string firstName, string lastName,  string id, string email, Role role)
         {

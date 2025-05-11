@@ -1,12 +1,20 @@
-using DataLayer;
+
+using MVCPresentationLayer.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Configuring DataLayer
-builder.Services.ConfigureDatabaseLayer(builder.Configuration);
+// Adding Options
+builder.Services.AddOptions(builder.Configuration);
+
+// Configuring DB abd Auth
+builder.Services.ConfigureDatabase(builder.Configuration);
+builder.Services.ConfigureAuthentication(builder.Configuration);
+
+// Injecting Services
+builder.Services.AddServices(builder.Configuration);
 
 var app = builder.Build();
 

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace InfrastructureLayer.Service
 {
-    internal class CrypterService : ICrypterService
+    public class CrypterService : ICrypterService
     {
         private readonly PasswordHasher<object> _hasher = new();
         public bool CompareHash(string plainText, string hashed)

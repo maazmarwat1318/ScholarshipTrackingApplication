@@ -42,7 +42,7 @@ public partial class StaDbContext : DbContext
         {
             entity.HasKey(e => e.TermId).HasName("PRIMARY");
 
-            entity.ToTable("academicterm")
+            entity.ToTable("academicterm");
 
             entity.Property(e => e.TermName).HasMaxLength(6);
             entity.Property(e => e.Year).HasPrecision(4);

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DataLayer.Entities;
+namespace DataLayer.Entity;
 
 public partial class Department
 {

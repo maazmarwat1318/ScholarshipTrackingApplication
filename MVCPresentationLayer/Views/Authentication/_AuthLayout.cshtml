@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewBag.Title - STA</title>
+	<link rel="icon" href="~/favicon.ico" />
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/MVCPresentationLayer.styles.css" asp-append-version="true" />
+	<script defer src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script defer src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script defer src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+	<script defer src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+	@* @await Html.PartialAsync("_ValidationScriptsPartial") *@
+	<script defer src="~/js/site.js" asp-append-version="true"></script>
+	@await RenderSectionAsync("Scripts", required: false)
+</head>
+<body>
+	<div class="toast-container mt-3 top-0 start-50 position-fixed translate-middle-x">
+		@if (ViewBag.ErrorMessage != null)
+		{
+			<div id="toastError" class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+				<div class="toast-header bg-danger">
+					<strong class="me-auto text-white h6 mb-0">Error</strong>
+					<button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+				</div>
+				<div class="toast-body mb-0 bg-danger" style="--bs-bg-opacity: 0.2">
+					@ViewBag.ErrorMessage
+				</div>
+			</div>
+		}
+
+		@if(ViewBag.SuccessMessage != null)
+		{
+			<div id="toastSuccess" class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+				<div class="toast-header bg-success">
+					<strong class="me-auto text-white h6 mb-0">Success</strong>
+					<button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+				</div>
+				<div class="toast-body mb-0 bg-success" style="--bs-bg-opacity: 0.2">
+					@ViewBag.SuccessMessage
+				</div>
+			</div>
+		}
+		
+	</div>
+	<main class="p-3 min-vh-100 bg-primary d-flex justify-content-center align-items-center shadow-sm" style="--bs-bg-opacity: 0.15">
+		<div class="bg-white p-4 w-100 shadow" style="max-width: 400px; border-radius: 15px">
+			<div class="d-flex justify-content-center mb-3">
+				<img src="/icon.png" style="width: 50px; height: 50px" />
+			</div>
+			<h4 class="h4 text-center mb-3">@ViewBag.Title</h4>
+			<h6 class="h6 text-center mb-2">@ViewBag.Description</h6>
+
+			@RenderBody()
+		</div>
+	</main>
+
+</body>
+</html>

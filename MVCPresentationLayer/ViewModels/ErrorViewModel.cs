@@ -2,8 +2,9 @@ namespace MVCPresentationLayer.ViewModels
 {
     public class ErrorViewModel
     {
-        public string? RequestId { get; set; }
+        public required string ErrorMessage { get; set; }
+        public required string ErrorTitle { get; set; }
 
-        public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+   
     }
 }

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DataLayer.Entities;
+namespace DataLayer.Entity;
 
 public partial class Application
 {

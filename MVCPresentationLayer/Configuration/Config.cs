@@ -2,8 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using DataLayer;
 using InfrastructureLayer.Options;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 namespace MVCPresentationLayer.Configuration
 {
     public static class Config
@@ -15,6 +15,12 @@ namespace MVCPresentationLayer.Configuration
             {
                 options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
             });
+        }
+
+        public static IServiceCollection ConfigureHttpClient(this IServiceCollection serviceCollection)
+        {
+
+            return serviceCollection.AddHttpClient();
         }
 
         public static IServiceCollection ConfigureAuthentication(this IServiceCollection serviceCollection, IConfiguration config)
@@ -37,6 +43,18 @@ namespace MVCPresentationLayer.Configuration
                     ValidIssuer = jwtOptions.Issuer,
                     ValidAudience = jwtOptions.Audience,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SecretKey))
+                };
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        if (context.Request.Cookies.ContainsKey("jwt"))
+                        {
+                            var token = context.Request.Cookies["jwt"];
+                            context.Token = token;
+                        }
+                        return Task.CompletedTask;
+                    }
                 };
             });
 

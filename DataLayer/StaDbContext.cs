@@ -1,5 +1,8 @@
-﻿using DataLayer.Entities;
+﻿using System;
+using System.Collections.Generic;
+using DataLayer.Entity;
 using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
 
 namespace DataLayer;
 
@@ -32,6 +35,8 @@ public partial class StaDbContext : DbContext
 
     public virtual DbSet<Student> Students { get; set; }
 
+    public virtual DbSet<User> Users { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
@@ -42,7 +47,7 @@ public partial class StaDbContext : DbContext
         {
             entity.HasKey(e => e.TermId).HasName("PRIMARY");
 
-            entity.ToTable("academicterm");
+            entity.ToTable("AcademicTerm");
 
             entity.Property(e => e.TermName).HasMaxLength(6);
             entity.Property(e => e.Year).HasPrecision(4);
@@ -91,7 +96,7 @@ public partial class StaDbContext : DbContext
         {
             entity.HasKey(e => e.HistoryId).HasName("PRIMARY");
 
-            entity.ToTable("applicationstatushistory");
+            entity.ToTable("ApplicationStatusHistory");
 
             entity.HasIndex(e => e.ApplicationId, "FK_ApplicationStatusHistory_Application");
 
@@ -153,13 +158,11 @@ public partial class StaDbContext : DbContext
 
             entity.ToTable("scholarshipmoderator");
 
-            entity.HasIndex(e => e.Email, "Email").IsUnique();
+            entity.Property(e => e.ModeratorId).ValueGeneratedNever();
 
-            entity.Property(e => e.Email).HasMaxLength(50);
-            entity.Property(e => e.FirstName).HasMaxLength(50);
-            entity.Property(e => e.LastName).HasMaxLength(50);
-            entity.Property(e => e.Password).HasMaxLength(15);
-            entity.Property(e => e.Role).HasMaxLength(15);
+            entity.HasOne(d => d.Moderator).WithOne(p => p.ScholarshipModerator)
+                .HasForeignKey<ScholarshipModerator>(d => d.ModeratorId)
+                .HasConstraintName("FK_Moderator_Id");
         });
 
         modelBuilder.Entity<ScholarshipOffering>(entity =>
@@ -179,7 +182,7 @@ public partial class StaDbContext : DbContext
 
             entity.HasMany(d => d.DegreeTitles).WithMany(p => p.Offerings)
                 .UsingEntity<Dictionary<string, object>>(
-                    "ScholarshipOfferingeligibility",
+                    "ScholarshipOfferingEligibility",
                     r => r.HasOne<Degree>().WithMany()
                         .HasForeignKey("DegreeTitle")
                         .HasConstraintName("FK_ScholarshipOfferingEligibility_Degree"),
@@ -198,7 +201,7 @@ public partial class StaDbContext : DbContext
 
             entity.HasMany(d => d.Moderators).WithMany(p => p.Offerings)
                 .UsingEntity<Dictionary<string, object>>(
-                    "ScholarshipOfferingmoderation",
+                    "ScholarshipOfferingModeration",
                     r => r.HasOne<ScholarshipModerator>().WithMany()
                         .HasForeignKey("ModeratorId")
                         .HasConstraintName("FK_ScholarshipOfferingModeration_ScholarshipModerator"),
@@ -221,21 +224,39 @@ public partial class StaDbContext : DbContext
 
             entity.ToTable("student");
 
-            entity.HasIndex(e => e.Email, "Email").IsUnique();
-
             entity.HasIndex(e => e.DegreeTitle, "FK_Student_Degree");
 
+            entity.Property(e => e.StudentId).ValueGeneratedNever();
             entity.Property(e => e.DegreeTitle).HasMaxLength(30);
-            entity.Property(e => e.Email).HasMaxLength(50);
-            entity.Property(e => e.FirstName).HasMaxLength(50);
-            entity.Property(e => e.LastName).HasMaxLength(50);
-            entity.Property(e => e.Password).HasMaxLength(15);
 
             entity.HasOne(d => d.DegreeTitleNavigation).WithMany(p => p.Students)
                 .HasForeignKey(d => d.DegreeTitle)
                 .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK_Student_Degree");
+
+            entity.HasOne(d => d.StudentNavigation).WithOne(p => p.Student)
+                .HasForeignKey<Student>(d => d.StudentId)
+                .HasConstraintName("FK_Student_Id");
         });
+
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("user");
+
+            entity.HasIndex(e => e.Email, "Email").IsUnique();
+
+            entity.Property(e => e.Email).HasMaxLength(50);
+            entity.Property(e => e.FirstName).HasMaxLength(50);
+            entity.Property(e => e.LastName).HasMaxLength(50);
+            entity.Property(e => e.Password).HasMaxLength(255);
+            entity.Property(e => e.Role).HasMaxLength(15);
+        });
+
+        modelBuilder.Entity<User>()
+        .Property(u => u.Role)
+        .HasConversion<string>();
 
         OnModelCreatingPartial(modelBuilder);
     }

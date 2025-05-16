@@ -16,6 +16,7 @@ namespace MVCPresentationLayer.Controllers
 
         public IActionResult Index()
         {
+            var authCookie = Request.Cookies["jwt"];
             return View();
         }
 
@@ -25,10 +26,6 @@ namespace MVCPresentationLayer.Controllers
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+
     }
 }

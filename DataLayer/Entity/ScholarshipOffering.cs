@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace DataLayer.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+namespace DataLayer.Entity;
 
 [Table("scholarshipoffering")]
 public partial class ScholarshipOffering

@@ -1,0 +1,54 @@
+﻿@model LogInViewModel;
+
+@{
+	ViewBag.Title = "Log in";
+	ViewBag.Description = "Enter you email and password to log in";
+}
+
+
+
+<div>
+	<form id="auth-form" asp-controller="Authentication" asp-action="Login" method="post">
+		@Html.AntiForgeryToken()
+
+		<div class="mb-2">
+			<label asp-for="Email" class="form-label"></label>
+			<input class="w-100 form-control mb-1" asp-for="Email" />
+			<span class="invalid-feedback" asp-validation-for="Email"></span>
+		</div>
+
+		<div class="mb-2">
+			<label asp-for="Password" class="form-label"></label>
+			<input class="w-100 form-control mb-1" type="password" asp-for="Password" />
+			<span class="invalid-feedback" asp-validation-for="Password"></span>
+		</div>
+		<div class="d-flex justify-content-end mb-3">
+			<a class="link-primary" asp-controller="Authentication" asp-action="ForgotPassword">
+				Forgot Password!
+			</a>
+		</div>
+
+		<div class="d-flex justify-content-center">
+			<button id="form-btn" type="submit" class="btn btn-primary w-100" style="max-width: 250px">
+				<span class="spinner-border spinner-border-sm visually-hidden mr-2" role="status" aria-hidden="true"></span>
+				Log in
+			</button>
+		</div>
+		<div>
+			<label class="visually-hidden" asp-for="CaptchaToken" ></label>
+			<input class="form-control visually-hidden" asp-for="CaptchaToken" />
+			<span class="invalid-feedback mt-2" asp-validation-for="CaptchaToken"></span>
+		</div>
+		<div class="g-recaptcha mt-2 d-flex justify-content-center"
+			 data-sitekey="@ViewBag.CaptchaKey"
+			 data-callback="onCaptchaVerified"></div>
+		
+	</form>
+</div>
+
+@section Scripts {
+	<script defer src="https://www.google.com/recaptcha/api.js"></script>
+	<script defer src="~/js/authentication/auth.js"></script>
+	<script defer src="~/js/authentication/login.js"></script>
+	
+}

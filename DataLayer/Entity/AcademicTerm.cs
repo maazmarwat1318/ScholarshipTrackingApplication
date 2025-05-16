@@ -1,6 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DataLayer.Entities;
+namespace DataLayer.Entity;
 
 [Table("academicterm")]
 public partial class AcademicTerm

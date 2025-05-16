@@ -1,4 +1,4 @@
-﻿namespace InfrastructureLayer.Interface
+﻿namespace Contracts.InfrastructureLayer
 {
     public interface ICrypterService
     {

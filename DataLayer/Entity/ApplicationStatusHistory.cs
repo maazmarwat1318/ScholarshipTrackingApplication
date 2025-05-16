@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DataLayer.Entities;
+namespace DataLayer.Entity;
 
 [Table("applicationstatushistory")]
 public partial class ApplicationStatusHistory

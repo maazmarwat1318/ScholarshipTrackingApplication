@@ -52,14 +52,14 @@ namespace InfrastructureLayer.Service
             }
         }
 
-        public T? GetClaimValue<T>(ClaimsPrincipal principal, string claimKey)
+        public T? GetClaimValue<T>(ClaimsPrincipal principal, string claimType)
         {
             if (principal == null)
             {
                 return default;
             }
 
-            Claim? claim = principal.FindFirst(claimKey);
+            Claim? claim = principal.FindFirst(claimType);
             if (claim == null)
             {
                 return default;
@@ -89,6 +89,11 @@ namespace InfrastructureLayer.Service
             }
         }
 
+        public Response<ClaimsPrincipal> VerifyResetPasswordToken(string token)
+        {
+            return VerifyToken(token, _jwtOptions.ResetPasswordAudience);
+        }
+
         private string GenerateToken(int id, int expiryInMinutes, string? firstName = null, Role? role = null, string? email = null)
         {
 
@@ -115,7 +120,8 @@ namespace InfrastructureLayer.Service
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public Response<ClaimsPrincipal> VerifyToken(string token)
+
+        private Response<ClaimsPrincipal> VerifyToken(string token, string? validAudience = null)
         {
             try
             {
@@ -129,7 +135,7 @@ namespace InfrastructureLayer.Service
                     ValidateIssuer = true,
                     ValidIssuer = _jwtOptions.Issuer,
                     ValidateAudience = true,
-                    ValidAudience = _jwtOptions.Audience,
+                    ValidAudience = validAudience ?? _jwtOptions.Audience,
                     ClockSkew = TimeSpan.Zero
                 };
 

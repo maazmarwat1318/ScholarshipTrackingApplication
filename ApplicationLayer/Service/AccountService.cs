@@ -11,6 +11,7 @@ using Contracts.InfrastructureLayer;
 using DomainLayer.Entity;
 using DomainLayer.Errors.AuthenticationErrors;
 using ApplicationLayer.DTO.Common;
+using System.Security.Claims;
 
 namespace ApplicationLayer.Service
 {
@@ -75,14 +76,14 @@ namespace ApplicationLayer.Service
 
         public async Task<Response<MessageResponse>> ResetPassword(ResetPasswordRequest request)
         {
-            var tokenValidationResult = _jwtService.VerifyToken(request.Token);
+            var tokenValidationResult = _jwtService.VerifyResetPasswordToken(request.Token);
 
             if(!tokenValidationResult.IsSuccess)
             {
                 return Response<MessageResponse>.Failure(tokenValidationResult.ServiceError!);
             }
 
-            var id = _jwtService.GetClaimValue<int?>(tokenValidationResult.Value!, "id");
+            var id = _jwtService.GetClaimValue<int?>(tokenValidationResult.Value!, ClaimTypes.NameIdentifier);
             if(id == null)
             {
                 Response<MessageResponse>.Failure(AuthenticationErrorHelper.TokenInvalidError());

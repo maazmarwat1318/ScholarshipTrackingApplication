@@ -8,6 +8,8 @@
         public int ResetPasswordTokenExpiryMinutes { get; set; } = 60;
 
         public int AccessTokenExpiryDays { get; set; } = 1;
+
+        public string ResetPasswordAudience { get; set; } = string.Empty;
     }
 
 }

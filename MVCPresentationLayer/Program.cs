@@ -44,7 +44,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.UseMiddleware<AuthRedirectMiddleware>();
+//app.UseMiddleware<AuthRedirectMiddleware>();
 app.UseRouting();
 
 app.UseAuthorization();

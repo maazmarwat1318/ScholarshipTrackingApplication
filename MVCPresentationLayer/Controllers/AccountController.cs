@@ -12,17 +12,19 @@ using MVCPresentationLayer.ViewModels.Authentication;
 
 namespace MVCPresentationLayer.Controllers
 {
-    public class AuthenticationController : ControllerWithHelpers
+    public class AccountController : ControllerWithHelpers
     {
-        private readonly IAuthenticationService _authService;
+        private readonly IAccountService _authService;
         private readonly ILogger _logger;
         private readonly CaptchaOptions _captchaOptions;
+        private readonly JwtOptions _jwtOptions;
 
-        public AuthenticationController(IAuthenticationService authService, ILogger<AuthenticationController> logger, IOptions<CaptchaOptions> captchaOptions)
+        public AccountController(IAccountService authService, ILogger<AccountController> logger, IOptions<CaptchaOptions> captchaOptions, IOptions<JwtOptions> jwtOptions)
         {
             _authService = authService;
             _logger = logger;
             _captchaOptions = captchaOptions.Value;
+            _jwtOptions = jwtOptions.Value;
         }
 
         [HttpGet]
@@ -62,7 +64,7 @@ namespace MVCPresentationLayer.Controllers
                     HttpOnly = true,
                     Secure = true,
                     SameSite = SameSiteMode.Strict,
-                    Expires = DateTimeOffset.UtcNow.AddHours(1)
+                    Expires = DateTimeOffset.UtcNow.AddHours(_jwtOptions.AccessTokenExpiryDays)
                 });
                 return RedirectToAction("Index", "Home");
             }
@@ -159,7 +161,7 @@ namespace MVCPresentationLayer.Controllers
 
         private IActionResult OnUnknowException(Exception ex, string action)
         {
-            _logger.LogError(ex, $"Unknown error occured at ${nameof(AuthenticationController)} in action ${action}");
+            _logger.LogError(ex, $"Unknown error occured at ${nameof(AccountController)} in action ${action}");
             return GetUnknownErrorView();
         }
     }

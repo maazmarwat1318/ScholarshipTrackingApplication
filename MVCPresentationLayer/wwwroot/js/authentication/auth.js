@@ -39,7 +39,7 @@
     //        btn.attr("disabled", true)
     //        btnLoader.removeClass("visually-hidden")
     //        $.ajax({
-    //            url: 'https://localhost:7025/Authentication/Login',
+    //            url: 'https://localhost:7025/Account/Login',
     //            method: 'POST',
     //            contentType: 'application/json',
     //            data: JSON.stringify({

@@ -28,7 +28,7 @@ namespace MVCPresentationLayer.Configuration
 
         private static IServiceCollection AddApplicationLayerServices(this IServiceCollection serviceCollection, IConfiguration config)
         {
-            serviceCollection.AddScoped<IAuthenticationService, AuthenticationService>();
+            serviceCollection.AddScoped<IAccountService, AccountService>();
             return serviceCollection;
         }
 

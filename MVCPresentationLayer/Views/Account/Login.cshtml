@@ -8,7 +8,7 @@
 
 
 <div>
-	<form id="auth-form" asp-controller="Authentication" asp-action="Login" method="post">
+	<form id="auth-form" asp-controller="Account" asp-action="Login" method="post">
 		@Html.AntiForgeryToken()
 
 		<div class="mb-2">
@@ -23,7 +23,7 @@
 			<span class="invalid-feedback" asp-validation-for="Password"></span>
 		</div>
 		<div class="d-flex justify-content-end mb-3">
-			<a class="link-primary" asp-controller="Authentication" asp-action="ForgotPassword">
+			<a class="link-primary" asp-controller="Account" asp-action="ForgotPassword">
 				Forgot Password!
 			</a>
 		</div>

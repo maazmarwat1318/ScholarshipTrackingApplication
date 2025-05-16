@@ -9,7 +9,7 @@ using ApplicationLayer.DTO.Common;
 
 namespace ApplicationLayer.Interface
 {
-    public interface IAuthenticationService
+    public interface IAccountService
     {
         Task<Response<LogInResponse>> Login( LogInRequest request);
         Task<Response<MessageResponse>> ForgotPassword(ForgotPasswordRequest request);

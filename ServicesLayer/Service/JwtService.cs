@@ -26,11 +26,11 @@ namespace InfrastructureLayer.Service
 
 
 
-        public string GenerateAccessToken(int id, string email, Role role)
+        public string GenerateAccessToken(int id, string firstName, string email, Role role)
         {
             try
             {
-                return GenerateToken(id, _jwtOptions.AccessTokenExpiryDays * 1440, role, email);
+                return GenerateToken(id, _jwtOptions.AccessTokenExpiryDays * 1440, firstName, role, email);
             }
             catch (Exception e)
             {
@@ -89,7 +89,7 @@ namespace InfrastructureLayer.Service
             }
         }
 
-        private string GenerateToken(int id, int expiryInMinutes, Role? role = null, string? email = null)
+        private string GenerateToken(int id, int expiryInMinutes, string? firstName = null, Role? role = null, string? email = null)
         {
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.SecretKey));
@@ -97,11 +97,12 @@ namespace InfrastructureLayer.Service
 
             var claims = new List<Claim>
             {
-             new Claim("id", id.ToString()),
+             new Claim(ClaimTypes.NameIdentifier, id.ToString()),
             };
 
             if (role != null) claims.Add(new Claim(ClaimTypes.Role, role.ToString()!));
             if (email != null) claims.Add(new Claim(ClaimTypes.Email, email));
+            if (firstName != null) claims.Add(new Claim(ClaimTypes.Name, firstName));
 
             var token = new JwtSecurityToken(
                 issuer: _jwtOptions.Issuer,

@@ -14,7 +14,7 @@ using ApplicationLayer.DTO.Common;
 
 namespace ApplicationLayer.Service
 {
-    public class AuthenticationService : IAuthenticationService
+    public class AccountService : IAccountService
     {
         private readonly IJwtService _jwtService;
         private readonly IUserRepository _userRepo;
@@ -22,7 +22,7 @@ namespace ApplicationLayer.Service
         private readonly IEmailService _emailService;
         private readonly ICaptchaVerificationService _captchaService;
 
-        public AuthenticationService(IJwtService jwtService, IUserRepository userRepo, ICrypterService crypterService, IEmailService emailService, ICaptchaVerificationService captchaService)
+        public AccountService(IJwtService jwtService, IUserRepository userRepo, ICrypterService crypterService, IEmailService emailService, ICaptchaVerificationService captchaService)
         {
             _jwtService = jwtService;
             _userRepo = userRepo;
@@ -49,7 +49,7 @@ namespace ApplicationLayer.Service
                 return Response<LogInResponse>.Failure(AuthenticationErrorHelper.InvalidCredentialsError());
             }
 
-            return Response<LogInResponse>.Success(new LogInResponse { Email = user.Email, FirstName = user.FirstName, LastName = user.LastName, Role = user.Role, Token = _jwtService.GenerateAccessToken(user.Id, user.Email, user.Role) });
+            return Response<LogInResponse>.Success(new LogInResponse { Token = _jwtService.GenerateAccessToken(user.Id, user.FirstName, user.Email, user.Role) });
         }
 
         public async Task<Response<MessageResponse>> ForgotPassword(ForgotPasswordRequest request)

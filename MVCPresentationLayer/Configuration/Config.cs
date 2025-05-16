@@ -50,11 +50,16 @@ namespace MVCPresentationLayer.Configuration
                     {
                         if (context.Request.Cookies.ContainsKey("jwt"))
                         {
-                            var token = context.Request.Cookies["jwt"];
-                            context.Token = token;
+                            context.Token = context.Request.Cookies["jwt"];
                         }
                         return Task.CompletedTask;
-                    }
+                    },
+                    OnChallenge = context =>
+                    {
+                        context.HandleResponse();
+                        context.Response.Redirect("/Account/Login");
+                        return Task.CompletedTask;
+                    },
                 };
             });
 

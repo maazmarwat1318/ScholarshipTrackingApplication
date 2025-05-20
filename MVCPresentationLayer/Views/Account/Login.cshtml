@@ -8,7 +8,7 @@
 
 
 <div>
-	<form id="auth-form" asp-controller="Account" asp-action="Login" method="post">
+	<form id="form" asp-controller="Account" asp-action="Login" method="post">
 		@Html.AntiForgeryToken()
 
 		<div class="mb-2">
@@ -48,7 +48,5 @@
 
 @section Scripts {
 	<script defer src="https://www.google.com/recaptcha/api.js"></script>
-	<script defer src="~/js/authentication/auth.js"></script>
 	<script defer src="~/js/authentication/login.js"></script>
-	
 }

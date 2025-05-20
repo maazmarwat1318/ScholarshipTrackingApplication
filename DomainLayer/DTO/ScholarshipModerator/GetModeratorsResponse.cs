@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using DomainLayer.Entity;
+
+namespace DomainLayer.DTO.ScholarshipModerator
+{
+    public class GetModeratorsResponse
+    {
+        public List<ScholarshipModeratorResponse> Moderators = [];
+        
+        public required int Page {  get; set; }
+    }
+
+}

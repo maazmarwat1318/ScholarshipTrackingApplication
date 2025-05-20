@@ -18,7 +18,7 @@ public partial class ScholarshipOffering
 
     public virtual Scholarship? Scholarship { get; set; }
 
-    public virtual ICollection<Degree> DegreeTitles { get; set; } = new List<Degree>();
+    public virtual ICollection<Degree> Degrees { get; set; } = new List<Degree>();
 
     public virtual ICollection<ScholarshipModerator> Moderators { get; set; } = new List<ScholarshipModerator>();
 

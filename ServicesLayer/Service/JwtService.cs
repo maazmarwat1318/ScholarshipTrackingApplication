@@ -30,7 +30,7 @@ namespace InfrastructureLayer.Service
         {
             try
             {
-                return GenerateToken(id, _jwtOptions.AccessTokenExpiryDays * 1440, firstName, role, email);
+                return GenerateToken(id, _jwtOptions.AccessTokenExpiryDays * 1440, _jwtOptions.Audience, firstName, role, email);
             }
             catch (Exception e)
             {
@@ -43,7 +43,7 @@ namespace InfrastructureLayer.Service
         {
             try
             {
-                return GenerateToken(id, _jwtOptions.ResetPasswordTokenExpiryMinutes);
+                return GenerateToken(id, _jwtOptions.ResetPasswordTokenExpiryMinutes, _jwtOptions.ResetPasswordAudience);
             }
             catch (Exception e)
             {
@@ -94,7 +94,7 @@ namespace InfrastructureLayer.Service
             return VerifyToken(token, _jwtOptions.ResetPasswordAudience);
         }
 
-        private string GenerateToken(int id, int expiryInMinutes, string? firstName = null, Role? role = null, string? email = null)
+        private string GenerateToken(int id, int expiryInMinutes, string validAudience, string? firstName = null, Role? role = null, string? email = null)
         {
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.SecretKey));
@@ -111,7 +111,7 @@ namespace InfrastructureLayer.Service
 
             var token = new JwtSecurityToken(
                 issuer: _jwtOptions.Issuer,
-                audience: _jwtOptions.Audience,
+                audience: validAudience,
                 claims: claims,
                 expires: DateTime.UtcNow.AddMinutes(expiryInMinutes),
                 signingCredentials: credentials
@@ -144,11 +144,11 @@ namespace InfrastructureLayer.Service
             }
             catch (SecurityTokenExpiredException ex)
             {
-                return Response<ClaimsPrincipal>.Failure(AuthenticationErrorHelper.TokenExpiredError(null, ex));
+                return Response<ClaimsPrincipal>.Failure(AccountErrorHelper.TokenExpiredError(null, ex));
             }
             catch (SecurityTokenValidationException ex)
             {
-                return Response<ClaimsPrincipal>.Failure(AuthenticationErrorHelper.TokenInvalidError(null, ex));
+                return Response<ClaimsPrincipal>.Failure(AccountErrorHelper.TokenInvalidError(null, ex));
             }
             catch (Exception ex)
             {

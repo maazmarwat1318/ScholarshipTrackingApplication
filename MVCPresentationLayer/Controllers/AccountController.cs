@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using ApplicationLayer.DTO.Authentication;
-using ApplicationLayer.Interface;
+using DomainLayer.DTO.Authentication;
+using Contracts.ApplicationLayer.Interface;
+using DomainLayer.Common;
 using DomainLayer.Errors;
 using InfrastructureLayer.Options;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,7 @@ using Microsoft.Extensions.Options;
 using MVCPresentationLayer.Extensions;
 using MVCPresentationLayer.Helpers;
 using MVCPresentationLayer.ViewModels;
-using MVCPresentationLayer.ViewModels.Authentication;
+using MVCPresentationLayer.ViewModels.Account;
 
 namespace MVCPresentationLayer.Controllers
 {
@@ -28,11 +29,28 @@ namespace MVCPresentationLayer.Controllers
         }
 
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(bool restrict = false)
         {
+            if(restrict == true)
+            {
+                ViewBag.ErrorMessage = "You need to log in to your account to access the application";
+            }
             ViewBag.CaptchaKey = _captchaOptions.ClientKey;
             ViewBag.SuccessMessage = TempData["SuccessMessage"];
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            Response.Cookies.Append("jwt", "", new CookieOptions
+            {
+                Expires = DateTimeOffset.UtcNow.AddDays(-1),
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict
+            });
+            return RedirectToAction("Login");
         }
 
         [HttpPost]
@@ -64,7 +82,7 @@ namespace MVCPresentationLayer.Controllers
                     HttpOnly = true,
                     Secure = true,
                     SameSite = SameSiteMode.Strict,
-                    Expires = DateTimeOffset.UtcNow.AddHours(_jwtOptions.AccessTokenExpiryDays)
+                    Expires = DateTimeOffset.UtcNow.AddDays(_jwtOptions.AccessTokenExpiryDays)
                 });
                 return RedirectToAction("Index", "Home");
             }
@@ -164,5 +182,6 @@ namespace MVCPresentationLayer.Controllers
             _logger.LogError(ex, $"Unknown error occured at ${nameof(AccountController)} in action ${action}");
             return GetUnknownErrorView();
         }
+
     }
 }

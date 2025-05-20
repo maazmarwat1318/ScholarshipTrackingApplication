@@ -2,7 +2,7 @@
 
 namespace MVCPresentationLayer.Configuration
 {
-    internal static class InjectOptions
+    internal static partial class Configuration
     {
         
         public static IServiceCollection AddOptions(this IServiceCollection serviceCollection, IConfiguration config)

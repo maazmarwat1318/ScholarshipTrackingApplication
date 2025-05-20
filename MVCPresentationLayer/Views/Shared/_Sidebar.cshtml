@@ -1,0 +1,76 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering;
+@using Microsoft.AspNetCore.Http;
+@using System.Collections.Generic;
+
+@{
+    string currentUrl = Context.Request.Path;
+
+    var navLinks = new List<NavLink>
+    {
+        new NavLink { Href = "/", Label = "Customers" },
+        new NavLink { Href = "/Student/", Label = "Students", IsExpandable = true },
+        new NavLink { Href = "/ScholarshipModerator/", Label = "Scholarship Moderators", IsExpandable = true },
+        new NavLink { Href = "/Student/Index", Label = "View Students", ParentHref = "/Student/" },
+        new NavLink { Href = "/Student/Create", Label = "Create Student", ParentHref = "/Student/" },
+        new NavLink { Href = "/ScholarshipModerator/Index", Label = "View Moderators", ParentHref = "/ScholarshipModerator/" },
+        new NavLink { Href = "/ScholarshipModerator/Create", Label = "Create Moderator", ParentHref = "/ScholarshipModerator/" },
+    };
+
+    var activeNav = navLinks.Find(nav => nav.Href == currentUrl); 
+    if(activeNav != null)
+    {
+        activeNav.IsActive = true;
+        if(activeNav.ParentHref != null)
+        {
+            var parent = navLinks.Find(nav => nav.Href == activeNav.ParentHref);
+            if (parent != null) parent.IsActive = true;
+        }
+    } else
+    {
+        var activeParent = navLinks.Find(nav => currentUrl.StartsWith(nav.Href));
+        if (activeParent != null) activeParent.IsActive = true;
+    }
+}
+
+<div class="flex-column gap-1">
+    @for (int i = 0; i< navLinks.Count(); i++) 
+    {
+        var link = navLinks[i];
+        if (link.IsExpandable)
+        {
+            var isExpanded = link.IsActive;
+            <div class="nav-item">
+                <a class="nav-link @(isExpanded ? "parent-nav active" : "")" href="@link.Href" data-bs-toggle="collapse" data-bs-target="#link-@i" aria-expanded="@(isExpanded ? "true" : "false")" aria-controls="link-@i">
+                    <span>@link.Label</span>
+                    <i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <div class="collapse @(isExpanded ? "show active-expanded-nav-div" : "")" id="link-@i">
+                    @foreach (var subLink in navLinks.Where(l => l.ParentHref == link.Href))
+                    {
+                        <a class="nav-link @(subLink.IsActive ? "active" : "")" href="@subLink.Href">
+                            <span class="ms-3">@subLink.Label</span>
+                        </a>
+                    }
+                </div>
+            </div>
+        }
+        else if (link.ParentHref == null)
+        {
+            <a class="nav-link @(link.IsActive ? "active" : "")" href="@link.Href">
+                @link.Label
+            </a>
+        }
+
+    }
+</div>
+
+@functions {
+    public class NavLink
+    {
+        public string Href { get; set; } = "";
+        public string Label { get; set; } = "";
+        public bool IsActive { get; set; } = false;
+        public bool IsExpandable { get; set; } = false;
+        public string? ParentHref { get; set; } = null;
+    }
+}

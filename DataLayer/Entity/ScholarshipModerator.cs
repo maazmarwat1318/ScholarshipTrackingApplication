@@ -7,7 +7,7 @@ namespace DataLayer.Entity;
 [Table("scholarshipmoderator")]
 public partial class ScholarshipModerator
 {
-    public int ModeratorId { get; set; }
+    public int Id { get; set; }
 
     public virtual ICollection<ApplicationStatusHistory> ApplicationStatusHistories { get; set; } = new List<ApplicationStatusHistory>();
 

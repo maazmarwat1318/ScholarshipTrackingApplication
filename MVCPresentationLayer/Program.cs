@@ -17,6 +17,9 @@ builder.Services.AddOptions(builder.Configuration);
 // Adding HTTP CLient
 builder.Services.ConfigureHttpClient();
 
+// Adding Mappers
+builder.Services.ConfigureAutoMapping();
+
 // Configuring DB abd Auth
 builder.Services.ConfigureDatabase(builder.Configuration);
 builder.Services.ConfigureAuthentication(builder.Configuration);

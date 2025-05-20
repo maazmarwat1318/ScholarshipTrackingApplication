@@ -1,0 +1,141 @@
+﻿using Contracts.ApplicationLayer.Interface;
+using AutoMapper;
+using DomainLayer.Entity;
+using DomainLayer.Enums;
+using InfrastructureLayer.Options;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Options;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using MVCPresentationLayer.Extensions;
+using MVCPresentationLayer.Helpers;
+using MVCPresentationLayer.ViewModels.ScholarshipModerator;
+using MVCPresentationLayer.ViewModels.Student;
+using DomainLayer.DTO.Student;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+
+namespace MVCPresentationLayer.Controllers
+{
+    public class StudentController : ControllerWithHelpers
+    {
+        private readonly IStudentService _studentService;
+        private readonly IAccountService _accountService;
+        private readonly IDegreeService _degreeService;
+        private readonly ILogger _logger;
+        private readonly IMapper _mapper;
+
+        public StudentController(IStudentService studentService, IAccountService accountService, IDegreeService degreeService, ILogger<StudentController> logger, IMapper mapper)
+        {
+            _studentService = studentService;
+            _degreeService = degreeService;
+            _logger = logger;
+            _mapper = mapper;
+            _accountService = accountService;
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Index(GetStudentsViewModel model)
+        {
+            ViewBag.SuccessMessage = TempData["SuccessMessage"];
+            ViewBag.ErrorMessage = TempData["ErrorMessage"];
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    model.Page = 1;
+                }
+                var request = _mapper.Map<GetStudentsRequest>(model);
+                var response = await _studentService.GetStudents(request);
+                model = _mapper.Map<GetStudentsViewModel>(response);
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                return OnUnknowException(ex, nameof(Create));
+            }
+
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    TempData["ErrorMessage"] = ModelState.GetFirstErrorMessage();
+                    return RedirectToAction("Index");
+                }
+
+                await _accountService.DeleteUser(id);
+                TempData["SuccessMessage"] = "Student Deleted Successfuly";
+                return RedirectToAction("Index");
+
+            }
+            catch (Exception ex)
+            {
+                return OnUnknowException(ex, nameof(Create));
+            }
+
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "SuperModerator, Moderator")]
+        public async Task<IActionResult> Create(CreateStudentViewModel? request)
+        {
+            try
+            {
+                ViewBag.SuccessMessage = TempData["SuccessMessage"];
+                ViewBag.ErrorMessage = TempData["ErrorMessage"];
+                var degrees = await _degreeService.GetAllDegrees();
+                var viewModel = request ?? new CreateStudentViewModel();
+                viewModel.Degrees = degrees.Value!.Select(deg => _mapper.Map<SelectListItem>(deg)).ToList();
+                return View(viewModel);
+
+            }
+            catch (Exception ex)
+            {
+                return OnUnknowException(ex, nameof(Create));
+            }
+
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "SuperModerator, Moderator")]
+        public async Task<IActionResult> CreateStudent(CreateStudentViewModel request)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    TempData["ErrorMessage"] = ModelState.GetFirstErrorMessage();
+                    return RedirectToAction("Create", request);
+                }
+
+                var result = await _studentService.AddStudent(_mapper.Map<Student>(request));
+                if (!result.IsSuccess)
+                {
+                    TempData["ErrorMessage"] = result.ServiceError!.Message;
+                    return RedirectToAction("Create", request);
+                }
+
+                TempData["SuccessMessage"] = result.Value!.Message;
+                return RedirectToAction("Create");
+
+            }
+            catch (Exception ex)
+            {
+                return OnUnknowException(ex, nameof(CreateStudent));
+            }
+
+        }
+
+        private IActionResult OnUnknowException(Exception ex, string action)
+        {
+            _logger.LogError(ex, $"Unknown error occured at ${nameof(StudentController)} in action ${action}");
+            return GetUnknownErrorView();
+        }
+    }
+}

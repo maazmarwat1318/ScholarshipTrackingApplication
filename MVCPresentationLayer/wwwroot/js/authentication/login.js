@@ -1,4 +1,6 @@
-﻿document.getElementById("CaptchaToken").value = "";
+﻿let captchaTokenField = $("#CaptchaToken");
+
+captchaTokenField.val("");
 function onCaptchaVerified(token) {
-    document.getElementById("CaptchaToken").value = token;
+    captchaTokenField.val(token);
 }

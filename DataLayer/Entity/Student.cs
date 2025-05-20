@@ -5,13 +5,13 @@ namespace DataLayer.Entity;
 
 public partial class Student
 {
-    public int StudentId { get; set; }
+    public int Id { get; set; }
 
-    public string? DegreeTitle { get; set; }
+    public int? DegreeId { get; set; }
 
     public virtual ICollection<Application> Applications { get; set; } = new List<Application>();
 
-    public virtual Degree? DegreeTitleNavigation { get; set; }
+    public virtual Degree? Degree { get; set; }
 
     public virtual User StudentNavigation { get; set; } = null!;
 }

@@ -1,4 +1,5 @@
-﻿using DomainLayer.Entity;
+﻿using DomainLayer.Common;
+using DomainLayer.Entity;
 
 namespace Contracts.DataLayer
 {
@@ -8,5 +9,7 @@ namespace Contracts.DataLayer
 
         Task<User?> GetByIdAsync(int id);
         Task<bool> UpdateUserPasswordAsync(int id, string newPassword);
+
+        Task DeleteUser(int id);
     }
 }

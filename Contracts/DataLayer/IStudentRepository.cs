@@ -9,5 +9,7 @@ namespace Contracts.DataLayer
         Task<Response<bool>> AddStudent(Student student);
         Task<GetStudentsResponse> GetStudents(GetStudentsRequest request);
 
+        Task<GetStudentsResponse> SearchStudentViaName(SearchStudentsViaNameRequest request);
+
     }
 }

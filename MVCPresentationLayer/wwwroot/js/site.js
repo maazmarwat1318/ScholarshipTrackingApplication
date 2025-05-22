@@ -22,10 +22,12 @@
         if (form.valid()) {
             btn.attr("disabled", true);
             btnLoader.removeClass("visually-hidden");
-            window.on("beforeunload", function () {
-                btnLoader.addClass("visually-hidden")
-                btn.attr("disabled", false)
-            })
+            try {
+                window.on("beforeunload", function () {
+                    btnLoader.addClass("visually-hidden")
+                    btn.attr("disabled", false)
+                })
+            } catch { }
         }
     });
 
@@ -36,15 +38,15 @@
 
     let navbar = $(".navbar");
 
-    window.addEventListener("scroll", (e) => {
-        if (window.scrollY > 10) {
-            if (navbar) {
-                navbar.addClass(["box-shadow", "border-bottom"]);
-            }
-        } else {
-            navbar.removeClass(["box-shadow", "border-bottom"]);
-        }
-    })
+    //window.addEventListener("scroll", (e) => {
+    //    if (window.scrollY > 10) {
+    //        if (navbar) {
+    //            navbar.addClass(["box-shadow", "border-bottom"]);
+    //        }
+    //    } else {
+    //        navbar.removeClass(["box-shadow", "border-bottom"]);
+    //    }
+    //})
 
 
     //$('#login-form').on("submit", (e) => {

@@ -46,5 +46,10 @@ namespace ApplicationLayer.Service
             return result;
 
         }
+        public async Task<GetModeratorsResponse> SearchModeratorsViaName(SearchModeratorViaNameRequest request)
+        {
+            var result = await _scholarshipModeratorRepo.SearchModeratosViaName(request);
+            return result;
+        }
     }
 }

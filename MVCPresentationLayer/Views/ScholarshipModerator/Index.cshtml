@@ -5,21 +5,109 @@
 }
 
 <div>
-	<div class="d-flex justify-content-end mb-3">
+	<div class="d-flex justify-content-end mb-3 gap-2">
+		<form id="form" asp-action="Index" method="get" asp-controller="ScholarshipModerator" style="max-width: 300px">
+			<div class="input-group">
+				<input type="text" class="form-control" asp-for="SearchString" placeholder="Search via name" />
+				<button class="btn btn-primary">
+					<i class=" bi-search"></i>
+				</button>
+			</div>
+			<span class="invalid-feedback" asp-validation-for="SearchString"></span>
+		</form>
 		<a asp-action="Create" asp-controller="ScholarshipModerator" class="btn btn-success">+ Create Moderator</a>
-	</div>
-	<div class="custom-display-grid">
-		@foreach (var moderator in Model.Moderators)
-		{
-			<div class="card">
-
-				<div class="card-body">
-					<h5 class="card-title">@moderator.FirstName + @moderator.LastName</h5>
-					<p class="card-text">@moderator.Email</p>
-					<a href="#" class="btn btn-primary">Edit</a>
-					<a href="#" class="btn btn-primary">Delete</a>
+		<form id="deleteForm" asp-action="Delete" method="post" asp-controller="ScholarshipModerator" class="visually-hidden">
+			<input name="id" />
+			<button type="submit"></button>
+		</form>
+		<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModal">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Delete User</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						Are you sure you want to delete this moderator ?
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button id="userDeleteButton" type="button" class="btn btn-danger">Delete User</button>
+					</div>
 				</div>
 			</div>
-		}
+		</div>
 	</div>
+	@* <div class="custom-display-grid"> *@
+	@* 	@foreach (var moderator in Model.Moderators) *@
+	@* 	{ *@
+	@* 		<div class="card"> *@
+
+	@* 			<div class="card-body"> *@
+	@* 				<h5 class="card-title">@moderator.FirstName + @moderator.LastName</h5> *@
+	@* 				<p class="card-text">@moderator.Email</p> *@
+	@* 				<a href="#" class="btn btn-primary">Edit</a> *@
+	@* 				<a href="#" class="btn btn-primary">Delete</a> *@
+	@* 			</div> *@
+	@* 		</div> *@
+	@* 	} *@
+	@* </div> *@
+
+	@if (Model.Moderators.Count != 0)
+	{
+		<div class="table-responsive-xl">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th scope="col">#</th>
+						<th class="single-line" style="text-overflow: clip" scope="col">First Name</th>
+						<th class="single-line" scope="col">Last Name</th>
+						<th class="single-line" scope="col">Email</th>
+						<th class="single-line" scope="col">Role</th>
+						<th class="single-line" scope="col">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					@for (int i = 0; i < Model.Moderators.Count(); i++)
+					{
+						var moderator = Model.Moderators[i];
+						<tr>
+							<th scope="row">@(i + 1)</th>
+							<td>@moderator.FirstName</td>
+							<td>@moderator.LastName</td>
+							<td>@moderator.Email</td>
+							<td>@moderator.Role.ToString()</td>
+							<td>
+								<div class="d-flex gap-2 align-items-center">
+									<a href="#" class="btn btn-primary btn-sm d-flex flex-nowrap align-items-center">
+										<i class="bi bi-pencil-square me-1"></i> <span>Edit</span>
+									</a>
+									<p class="user-id visually-hidden">@moderator.Id</p>
+									<button class="btn btn-primary btn-sm card-delete-button btn-danger d-flex flex-nowrap align-items-center"><i class="bi bi-trash me-1"></i> <span>Delete</span></button>
+								</div>
+							<td />
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+		<div class="d-flex justify-content-center gap-2">
+			@{
+				var hasPrev = Model.Page != 1;
+				var hasNext = !Model.LastPage;
+				var prevHref = hasPrev ? "href=" + ($"/ScholarshipModerator?Page={Model.Page - 1}" + (Model.SearchString != "" ? $"&SearchString={Model.SearchString}" : "")) : null;
+				var nextHref = hasNext ? "href=" + ($"/ScholarshipModerator?Page={Model.Page + 1}" + (Model.SearchString != "" ? $"&SearchString={Model.SearchString}" : "")) : null;
+				<a class="btn btn-text @(hasPrev ? "text-primary" : "text-muted no-cursor-pointer")" @prevHref><i class="bi-chevron-left"></i> Previous</a>
+				<a class="btn btn-text @(hasNext ? "text-primary" : "text-muted no-cursor-pointer")" @nextHref> Next <i class="bi-chevron-right"></i></a>
+			}
+		</div>
+	}
+	else
+	{
+		<p class="text-center text-muted">No moderators found</p>
+	}
 </div>
+
+@section Scripts {
+	<script defer src="~/js/scholarshipmoderator/index.js"></script>
+}

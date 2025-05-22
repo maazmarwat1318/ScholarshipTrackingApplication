@@ -17,5 +17,7 @@ namespace Contracts.ApplicationLayer.Interface
         Task<Response<MessageResponse>> AddScholarshipModerator(ScholarshipModerator student);
 
         Task<GetModeratorsResponse> GetModerators(GetModeratorsRequest request);
+
+        Task<GetModeratorsResponse> SearchModeratorsViaName(SearchModeratorViaNameRequest request);
     }
 }

@@ -166,14 +166,14 @@ namespace DataLayer.Repository
                 {
                     return Response<bool>.Failure(AccountErrorHelper.UserAlreadyExistsError());
                 }
-                _logger.LogError(e, $"Repository Error occured at ${nameof(UserRepository)} in ${nameof(AddStudent)}");
+                _logger.LogError(e, $"Repository Error occured at {nameof(UserRepository)} in {nameof(AddStudent)}");
                 throw;
 
             }
             catch (Exception e)
             {
                 transaction.Rollback();
-                _logger.LogError(e, $"Repository Error occured at ${nameof(UserRepository)} in ${nameof(AddStudent)}");
+                _logger.LogError(e, $"Repository Error occured at {nameof(UserRepository)} in {nameof(AddStudent)}");
                 throw;
             }
         }
@@ -186,7 +186,7 @@ namespace DataLayer.Repository
             }
             catch (Exception e)
             {
-                _logger.LogError(e, $"Repository Error occured at ${nameof(UserRepository)} in ${nameof(SaveChangesAsync)}");
+                _logger.LogError(e, $"Repository Error occured at {nameof(UserRepository)} in {nameof(SaveChangesAsync)}");
                 throw;
             }
 
@@ -200,7 +200,7 @@ namespace DataLayer.Repository
             }
             catch (Exception e)
             {
-                _logger.LogError(e, $"Repository Error occured at ${nameof(UserRepository)} in ${nameof(DeleteUser)}");
+                _logger.LogError(e, $"Repository Error occured at {nameof(UserRepository)} in {nameof(DeleteUser)}");
                 throw;
             }
         }

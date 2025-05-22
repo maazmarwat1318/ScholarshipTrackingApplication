@@ -17,6 +17,8 @@ namespace MVCPresentationLayer.Configuration
             {
                 cfg.AddProfile<StudentMappingProfile>();
                 cfg.AddProfile<DegreeMappingProfile>();
+                cfg.AddProfile<ScholarshipModeratorMappingProfile>();
+                cfg.AddProfile<UserMappingProfile>();
             });
 
             #if DEBUG

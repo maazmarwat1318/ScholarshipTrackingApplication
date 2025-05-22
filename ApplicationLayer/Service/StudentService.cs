@@ -46,6 +46,12 @@ namespace ApplicationLayer.Service
 
         }
 
+        public async Task<GetStudentsResponse> SearchStudentViaName(SearchStudentsViaNameRequest request)
+        {
+            var result = await _studentRepo.SearchStudentViaName(request);
+            return result;
+        }
+
 
     }
 }

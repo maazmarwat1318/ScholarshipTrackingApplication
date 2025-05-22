@@ -36,6 +36,7 @@ namespace MVCPresentationLayer.Controllers
 
 
         [HttpGet]
+        [Authorize(Roles = "SuperModerator, Moderator")]
         public async Task<IActionResult> Index(GetStudentsViewModel model)
         {
             ViewBag.SuccessMessage = TempData["SuccessMessage"];
@@ -46,8 +47,9 @@ namespace MVCPresentationLayer.Controllers
                 {
                     model.Page = 1;
                 }
-                var request = _mapper.Map<GetStudentsRequest>(model);
-                var response = await _studentService.GetStudents(request);
+                
+
+                var response = model.SearchString == "" ? await _studentService.GetStudents(_mapper.Map<GetStudentsRequest>(model)) : await _studentService.SearchStudentViaName(_mapper.Map<SearchStudentsViaNameRequest>(model));
                 model = _mapper.Map<GetStudentsViewModel>(response);
                 return View(model);
             }
@@ -58,7 +60,8 @@ namespace MVCPresentationLayer.Controllers
 
         }
 
-        [HttpDelete]
+        [HttpPost]
+        [Authorize(Roles = "SuperModerator, Moderator")]
         public async Task<IActionResult> Delete(int id)
         {
             try

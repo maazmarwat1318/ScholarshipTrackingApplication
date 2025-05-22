@@ -9,6 +9,12 @@ namespace MVCPresentationLayer.ViewModels.Student
         [Range(1, int.MaxValue)]
         public int Page { get; set; }
 
-        public List<StudentResponse> Students { get; set; } = [];
+        public bool LastPage { get; set; } = false;
+
+        public int PageSize { get; set; } = 10;
+
+        public string SearchString { get; set; } = "";
+
+        public List<StudentResponseWithDegree> Students { get; set; } = [];
     }
 }

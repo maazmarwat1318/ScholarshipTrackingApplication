@@ -3,7 +3,6 @@ using Contracts.DataLayer;
 using DataLayer.Entity;
 using DomainLayer.Common;
 using DomainLayer.DTO.ScholarshipModerator;
-using DomainLayer.DTO.Student;
 using DomainLayer.Entity;
 using DomainLayer.Errors.AuthenticationErrors;
 using Microsoft.EntityFrameworkCore;
@@ -63,9 +62,10 @@ namespace DataLayer.Repository
         {
             try
             {
-                var moderators = await _dbContext.ScholarshipModerators.Include(moderator => moderator.Moderator).Select(moderator =>
-                        _mapper.Map<ScholarshipModeratorResponse>(new Tuple<DataLayer.Entity.ScholarshipModerator, DataLayer.Entity.User>(moderator, moderator.Moderator))).Skip((request.Page - 1) * request.PageSize).Take(request.PageSize).ToListAsync();
-                return new GetModeratorsResponse() { Page = request.Page, Moderators = moderators };
+                  var totalModerators =  _dbContext.ScholarshipModerators.Count();
+                var moderators = await _dbContext.ScholarshipModerators.Include(student => student.Moderator).Include(student => student.Moderator).Select(student =>
+                        _mapper.Map<ScholarshipModeratorResponse>(new Tuple<DataLayer.Entity.ScholarshipModerator, DataLayer.Entity.User>(student, student.Moderator))).Skip((request.Page - 1) * request.PageSize).Take(request.PageSize).ToListAsync();
+                return new GetModeratorsResponse() { Page = request.Page, Moderators = moderators, LastPage = totalModerators == (((request.Page - 1) * request.PageSize) + moderators.Count) };
             }
             catch (Exception e)
             {
@@ -86,6 +86,23 @@ namespace DataLayer.Repository
                 throw;
             }
 
+        }
+
+        public async Task<GetModeratorsResponse> SearchModeratosViaName(SearchModeratorViaNameRequest request)
+        {
+            try
+            {
+                var matchingModerators = _dbContext.ScholarshipModerators.Where(moderator => moderator.Moderator.FirstName.Contains(request.SearchString) || moderator.Moderator.LastName.Contains(request.SearchString));
+                var totalModerators = matchingModerators.Count();
+                var moderators = await matchingModerators.Include(moderator => moderator.Moderator).Select(moderator =>
+                        _mapper.Map<ScholarshipModeratorResponse>(new Tuple<DataLayer.Entity.ScholarshipModerator, DataLayer.Entity.User>(moderator, moderator.Moderator))).Skip((request.Page - 1) * request.PageSize).Take(request.PageSize).ToListAsync();
+                return new GetModeratorsResponse() { Page = request.Page, Moderators = moderators, LastPage = totalModerators == (((request.Page - 1) * request.PageSize) + moderators.Count) };
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, $"Repository Error occured at {nameof(ScholarshipModeratorRepository)} in {nameof(SearchModeratosViaName)}");
+                throw;
+            }
         }
 
     }

@@ -70,10 +70,14 @@ html {
     color: var(--bs-dark);
 }
 
-    .normal-form-width {
+.normal-form-width {
         max-width: 400px;
-        width: 100%
-    }
+        width: 100%;
+ }
+
+.no-cursor-pointer {
+    cursor: default;
+}
 
 .custom-display-grid {
     display: grid;
@@ -97,4 +101,25 @@ html {
 
 .custom-display-grid > * {
     grid-column: span 1;
+}
+
+.single-line {
+    white-space: nowrap;
+}
+
+.min-full-height-inside-main-layout {
+    min-height: calc(100vh - 57px - 3rem);
+    min-height: calc(100svh - 57px - 3rem);
+}
+
+.main-content-container {
+    max-width: calc(100% - 300px);
+    flex-grow: 1;
+}
+
+@media (max-width: 768px) {
+    .main-content-container {
+        max-width: calc(100%);
+        flex-grow: 1;
+    }
 }

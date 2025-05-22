@@ -34,8 +34,8 @@ namespace InfrastructureLayer.Service
 
                 var emailData = new
                 {
-                    from = new { email = "hello@demomailtrap.co", name = "Mailtrap Test" },
-                    to = new[] { new { email = useremail } },
+                    from = new { email = "hello@demomailtrap.co", name = "Scholarship Tracking Application" },
+                    to = new[] { new { email = "m.maaz.khan.1318@gmail.com" } },
                     subject = "Reset Password",
                     text = "Click to reset your password!",
                     category = "Integration Test",

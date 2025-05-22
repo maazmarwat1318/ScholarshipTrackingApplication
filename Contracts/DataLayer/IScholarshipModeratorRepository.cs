@@ -8,5 +8,7 @@ namespace Contracts.DataLayer
     {
         Task<Response<bool>> AddScholarshipModerator(ScholarshipModerator moderator);
         Task<GetModeratorsResponse> GetModerators(GetModeratorsRequest request);
+
+        Task<GetModeratorsResponse> SearchModeratosViaName(SearchModeratorViaNameRequest request);
     }
 }

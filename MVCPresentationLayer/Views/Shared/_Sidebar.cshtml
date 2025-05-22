@@ -3,20 +3,21 @@
 @using System.Collections.Generic;
 
 @{
-    string currentUrl = Context.Request.Path;
+    string currentUrl = Context.Request.Path.Value ?? "/";
+
 
     var navLinks = new List<NavLink>
     {
-        new NavLink { Href = "/", Label = "Customers" },
-        new NavLink { Href = "/Student/", Label = "Students", IsExpandable = true },
-        new NavLink { Href = "/ScholarshipModerator/", Label = "Scholarship Moderators", IsExpandable = true },
-        new NavLink { Href = "/Student/Index", Label = "View Students", ParentHref = "/Student/" },
-        new NavLink { Href = "/Student/Create", Label = "Create Student", ParentHref = "/Student/" },
-        new NavLink { Href = "/ScholarshipModerator/Index", Label = "View Moderators", ParentHref = "/ScholarshipModerator/" },
-        new NavLink { Href = "/ScholarshipModerator/Create", Label = "Create Moderator", ParentHref = "/ScholarshipModerator/" },
+        new NavLink { Href = "/", Label = "Home" },
+        new NavLink { Href = "/Student", Label = "Students", IsExpandable = true },
+        new NavLink { Href = "/ScholarshipModerator", Label = "Scholarship Moderators", IsExpandable = true },
+        new NavLink { Href = "/Student", Label = "View Students", ParentHref = "/Student" },
+        new NavLink { Href = "/Student/Create", Label = "Create Student", ParentHref = "/Student" },
+        new NavLink { Href = "/ScholarshipModerator", Label = "View Moderators", ParentHref = "/ScholarshipModerator" },
+        new NavLink { Href = "/ScholarshipModerator/Create", Label = "Create Moderator", ParentHref = "/ScholarshipModerator" },
     };
 
-    var activeNav = navLinks.Find(nav => nav.Href == currentUrl); 
+    var activeNav = navLinks.Find(nav => nav.Href == currentUrl && !nav.IsExpandable); 
     if(activeNav != null)
     {
         activeNav.IsActive = true;

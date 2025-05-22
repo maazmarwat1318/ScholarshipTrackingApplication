@@ -10,6 +10,12 @@ namespace MVCPresentationLayer.ViewModels.ScholarshipModerator
         [Range(1, int.MaxValue)]
         public int Page { get; set; }
 
+        public bool LastPage { get; set; } = false;
+
+        public int PageSize { get; set; } = 10;
+
+        public string SearchString { get; set; } = "";
+
         public List<ScholarshipModeratorResponse> Moderators { get; set; } = [];
     }
 }

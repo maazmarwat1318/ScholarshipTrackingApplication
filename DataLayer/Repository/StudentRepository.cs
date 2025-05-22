@@ -64,13 +64,31 @@ namespace DataLayer.Repository
         {
             try
             {
-                var students = await _dbContext.Students.Include(student => student.StudentNavigation).Select(student =>
-                        _mapper.Map<StudentResponse>(new Tuple<DataLayer.Entity.Student, DataLayer.Entity.User>(student, student.StudentNavigation))).Skip((request.Page - 1) * request.PageSize).Take(request.PageSize).ToListAsync();
-                return new GetStudentsResponse() { Page = request.Page, Students = students };
+                var totalStudents =  _dbContext.Students.Count();
+                var students = await _dbContext.Students.Include(student => student.StudentNavigation).Include(student => student.Degree).Select(student =>
+                        _mapper.Map<StudentResponseWithDegree>(new Tuple<DataLayer.Entity.Student, DataLayer.Entity.User, DataLayer.Entity.Degree?>(student, student.StudentNavigation, student.Degree))).Skip((request.Page - 1) * request.PageSize).Take(request.PageSize).ToListAsync();
+                return new GetStudentsResponse() { Page = request.Page, Students = students, LastPage = totalStudents == (((request.Page - 1) * request.PageSize) + students.Count) };
             }
             catch (Exception e)
             {
-                _logger.LogError(e, $"Repository Error occured at ${nameof(StudentRepository)} in ${nameof(GetStudents)}");
+                _logger.LogError(e, $"Repository Error occured at {nameof(StudentRepository)} in {nameof(GetStudents)}");
+                throw;
+            }
+        }
+
+        public async Task<GetStudentsResponse> SearchStudentViaName(SearchStudentsViaNameRequest request)
+        {
+            try
+            {
+                var matchingStudents = _dbContext.Students.Where(student => student.StudentNavigation.FirstName.Contains(request.SearchString) || student.StudentNavigation.LastName.Contains(request.SearchString));
+                var totalStudents = matchingStudents.Count();
+                var students = await matchingStudents.Include(student => student.StudentNavigation).Include(student => student.Degree).Select(student =>
+                        _mapper.Map<StudentResponseWithDegree>(new Tuple<DataLayer.Entity.Student, DataLayer.Entity.User, DataLayer.Entity.Degree?>(student, student.StudentNavigation, student.Degree))).Skip((request.Page - 1) * request.PageSize).Take(request.PageSize).ToListAsync();
+                return new GetStudentsResponse() { Page = request.Page, Students = students, LastPage = totalStudents == (((request.Page - 1) * request.PageSize) + students.Count) };
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, $"Repository Error occured at {nameof(StudentRepository)} in {nameof(SearchStudentViaName)}");
                 throw;
             }
         }

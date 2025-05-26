@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DomainLayer.Common;
 using DomainLayer.DTO.Authentication;
 using DomainLayer.DTO.Common;
+using DomainLayer.DTO.Student;
 using DomainLayer.Entity;
 
 namespace Contracts.ApplicationLayer.Interface
@@ -18,6 +19,8 @@ namespace Contracts.ApplicationLayer.Interface
         Task<Response<MessageResponse>> ResetPassword(ResetPasswordRequest request);
 
         Task DeleteUser(int id);
+
+        
 
     }
 }

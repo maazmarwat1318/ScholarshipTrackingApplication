@@ -16,6 +16,10 @@ namespace MVCPresentationLayer.MappingProfiles
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.Password, opt => opt.MapFrom(src => "00000000"));
 
+            CreateMap<EditScholarshipModeratorViewModel, EditScholarshipModeratorRequest>().ReverseMap();
+
+            CreateMap<ScholarshipModeratorResponse, EditScholarshipModeratorViewModel>().ForMember(s => s.ModeratorId, opt => opt.MapFrom(dest => dest.Id));
+
             CreateMap<GetModeratorsViewModel, GetModeratorsRequest>()
                 .ForMember(dest => dest.PageSize, opt => opt.Ignore());
 

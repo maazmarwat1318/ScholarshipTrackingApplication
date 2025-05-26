@@ -15,6 +15,10 @@ namespace MVCPresentationLayer.MappingProfiles
 
             CreateMap<DomainLayer.Entity.Student, DomainLayer.DTO.Student.StudentResponse>();
 
+            CreateMap<EditStudentViewModel, EditStudentRequest>().ReverseMap().ForMember(s => s.Degrees, opt => opt.Ignore());
+
+            CreateMap<StudentResponse, EditStudentViewModel>().ForMember(s => s.Degrees, opt => opt.Ignore()).ForMember(s => s.StudentId, opt => opt.MapFrom(dest => dest.Id));
+
             CreateMap<CreateStudentViewModel, DomainLayer.Entity.Student>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.Password, opt => opt.MapFrom(src => "00000000"))

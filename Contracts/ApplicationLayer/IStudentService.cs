@@ -17,5 +17,9 @@ namespace Contracts.ApplicationLayer.Interface
         Task<GetStudentsResponse> GetStudents(GetStudentsRequest request);
 
         Task<GetStudentsResponse> SearchStudentViaName(SearchStudentsViaNameRequest request);
+
+        Task<Response<MessageResponse>> EditStudent(EditStudentRequest request);
+
+        Task<Response<StudentResponse>> GetStudentById(int id);
     }
 }

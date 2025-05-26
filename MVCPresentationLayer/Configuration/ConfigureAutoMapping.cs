@@ -27,7 +27,6 @@ namespace MVCPresentationLayer.Configuration
                 configuration.AssertConfigurationIsValid();
             } catch (Exception e)
             {
-                Console.WriteLine(e);
                 throw;
             }
             #endif

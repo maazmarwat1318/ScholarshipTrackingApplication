@@ -3,6 +3,7 @@ using Contracts.DataLayer;
 using DataLayer.Entity;
 using DomainLayer.Common;
 using DomainLayer.DTO.ScholarshipModerator;
+using DomainLayer.DTO.Student;
 using DomainLayer.Entity;
 using DomainLayer.Errors.AuthenticationErrors;
 using Microsoft.EntityFrameworkCore;
@@ -46,14 +47,14 @@ namespace DataLayer.Repository
                 {
                     return Response<bool>.Failure(AccountErrorHelper.UserAlreadyExistsError());
                 }
-                _logger.LogError(e, $"Repository Error occured at ${nameof(ScholarshipModeratorRepository)} in ${nameof(AddScholarshipModerator)}");
+                LogError(e, nameof(AddScholarshipModerator));
                 throw;
 
             }
             catch (Exception e)
             {
                 transaction.Rollback();
-                _logger.LogError(e, $"Repository Error occured at ${nameof(ScholarshipModeratorRepository)} in ${nameof(AddScholarshipModerator)}");
+                LogError(e, nameof(AddScholarshipModerator));
                 throw;
             }
         }
@@ -62,30 +63,51 @@ namespace DataLayer.Repository
         {
             try
             {
-                  var totalModerators =  _dbContext.ScholarshipModerators.Count();
-                var moderators = await _dbContext.ScholarshipModerators.Include(student => student.Moderator).Include(student => student.Moderator).Select(student =>
-                        _mapper.Map<ScholarshipModeratorResponse>(new Tuple<DataLayer.Entity.ScholarshipModerator, DataLayer.Entity.User>(student, student.Moderator))).Skip((request.Page - 1) * request.PageSize).Take(request.PageSize).ToListAsync();
+                var totalModerators = _dbContext.ScholarshipModerators.Count();
+                var moderators = await _dbContext.ScholarshipModerators.Include(moderator => moderator.Moderator).Include(moderator => moderator.Moderator).Select(moderator =>
+                        _mapper.Map<ScholarshipModeratorResponse>(new Tuple<DataLayer.Entity.ScholarshipModerator, DataLayer.Entity.User>(moderator, moderator.Moderator))).Skip((request.Page - 1) * request.PageSize).Take(request.PageSize).ToListAsync();
                 return new GetModeratorsResponse() { Page = request.Page, Moderators = moderators, LastPage = totalModerators == (((request.Page - 1) * request.PageSize) + moderators.Count) };
             }
             catch (Exception e)
             {
-                _logger.LogError(e, $"Repository Error occured at ${nameof(ScholarshipModeratorRepository)} in ${nameof(GetModerators)}");
+                LogError(e, nameof(GetModerators));
                 throw;
             }
         }
 
-        public async Task<bool> SaveChangesAsync()
+        public async Task<ScholarshipModeratorResponse?> GetModeratorById(int id)
         {
             try
             {
-                return await _dbContext.SaveChangesAsync() > 0;
+                var moderator = await _dbContext.ScholarshipModerators.Include(moderator => moderator.Moderator).Include(moderator => moderator.Moderator).Where(moderator => moderator.Id == id).Select(moderator =>
+                        _mapper.Map<ScholarshipModeratorResponse>(new Tuple<DataLayer.Entity.ScholarshipModerator, DataLayer.Entity.User>(moderator, moderator.Moderator))).FirstOrDefaultAsync();
+                return moderator;
             }
             catch (Exception e)
             {
-                _logger.LogError(e, $"Repository Error occured at ${nameof(ScholarshipModeratorRepository)} in ${nameof(SaveChangesAsync)}");
+                LogError(e, nameof(GetModerators));
                 throw;
             }
+        }
 
+        public async Task<Response<bool>> EditModerator(EditScholarshipModeratorRequest request)
+        {
+            try
+            {
+                await _dbContext.Users
+                        .Where(u => u.Id == request.ModeratorId)
+                        .ExecuteUpdateAsync(u => u
+                         .SetProperty(user => user.Role, request.Role)
+                         .SetProperty(user => user.FirstName, request.FirstName)
+                         .SetProperty(user => user.LastName, request.LastName)
+                         .SetProperty(user => user.Email, request.Email));
+                return Response<bool>.Success(true);
+            }
+            catch (Exception e)
+            {
+                LogError(e, nameof(EditModerator));
+                throw;
+            }
         }
 
         public async Task<GetModeratorsResponse> SearchModeratosViaName(SearchModeratorViaNameRequest request)
@@ -100,9 +122,28 @@ namespace DataLayer.Repository
             }
             catch (Exception e)
             {
-                _logger.LogError(e, $"Repository Error occured at {nameof(ScholarshipModeratorRepository)} in {nameof(SearchModeratosViaName)}");
+                LogError(e, nameof(SearchModeratosViaName));
                 throw;
             }
+        }
+
+        private async Task<bool> SaveChangesAsync()
+        {
+            try
+            {
+                return await _dbContext.SaveChangesAsync() > 0;
+            }
+            catch (Exception e)
+            {
+                LogError(e, nameof(SaveChangesAsync));
+                throw;
+            }
+
+        }
+
+        private void LogError(Exception e, string methodName)
+        {
+            _logger.LogError(e, $"Repository Error occured at {nameof(ScholarshipModeratorRepository)} in {methodName}");
         }
 
     }

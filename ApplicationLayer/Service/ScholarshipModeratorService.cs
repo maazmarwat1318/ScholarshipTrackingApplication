@@ -11,6 +11,7 @@ using DomainLayer.DTO.Common;
 using DomainLayer.DTO.ScholarshipModerator;
 using DomainLayer.DTO.Student;
 using DomainLayer.Entity;
+using DomainLayer.Errors.AuthenticationErrors;
 
 namespace ApplicationLayer.Service
 {
@@ -40,6 +41,15 @@ namespace ApplicationLayer.Service
             });
         }
 
+        public async Task<Response<MessageResponse>> EditModerator(EditScholarshipModeratorRequest request)
+        {
+            var result = await _scholarshipModeratorRepo.EditModerator(request);
+            return Response<MessageResponse>.Success(new()
+            {
+                Message = "Moderator Updated Successfuly"
+            });
+        }
+
         public async Task<GetModeratorsResponse> GetModerators(GetModeratorsRequest request)
         {
             var result = await _scholarshipModeratorRepo.GetModerators(request);
@@ -50,6 +60,16 @@ namespace ApplicationLayer.Service
         {
             var result = await _scholarshipModeratorRepo.SearchModeratosViaName(request);
             return result;
+        }
+
+        public async Task<Response<ScholarshipModeratorResponse>> GetModeratorById(int id)
+        {
+            var moderator = await _scholarshipModeratorRepo.GetModeratorById(id);
+            if (moderator == null)
+            {
+                return Response<ScholarshipModeratorResponse>.Failure(AccountErrorHelper.UserNotFoundError());
+            }
+            return Response<ScholarshipModeratorResponse>.Success(moderator);
         }
     }
 }

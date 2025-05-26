@@ -135,6 +135,57 @@ namespace MVCPresentationLayer.Controllers
 
         }
 
+        [HttpGet]
+        [Authorize(Roles = "SuperModerator, Moderator")]
+        public async Task<IActionResult> Edit(int id)
+        {
+            try
+            {
+                var student = await _studentService.GetStudentById(id);
+                if(!student.IsSuccess)
+                {
+                    TempData["ErrorMessage"] = student.ServiceError!.Message;
+                    return RedirectToAction("Index");
+                }
+                ViewBag.SuccessMessage = TempData["SuccessMessage"];
+                ViewBag.ErrorMessage = TempData["ErrorMessage"];
+                var degrees = await _degreeService.GetAllDegrees();
+                var viewModel = _mapper.Map<EditStudentViewModel>(student.Value);
+                viewModel.Degrees = [.. degrees.Value!.Select(deg => _mapper.Map<SelectListItem>(deg))];
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                return OnUnknowException(ex, nameof(Create));
+            }
+
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "SuperModerator, Moderator")]
+        public async Task<IActionResult> EditStudent(EditStudentViewModel request)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    TempData["ErrorMessage"] = ModelState.GetFirstErrorMessage();
+                    return RedirectToAction("Edit", new { id = request.StudentId });
+                }
+
+                var result = await _studentService.EditStudent(_mapper.Map<EditStudentRequest>(request));
+
+                TempData["SuccessMessage"] = result.Value!.Message;
+                return RedirectToAction("Edit", new { id = request.StudentId });
+
+            }
+            catch (Exception ex)
+            {
+                return OnUnknowException(ex, nameof(EditStudent));
+            }
+
+        }
+
         private IActionResult OnUnknowException(Exception ex, string action)
         {
             _logger.LogError(ex, $"Unknown error occured at ${nameof(StudentController)} in action ${action}");

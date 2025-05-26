@@ -10,5 +10,9 @@ namespace Contracts.DataLayer
         Task<GetModeratorsResponse> GetModerators(GetModeratorsRequest request);
 
         Task<GetModeratorsResponse> SearchModeratosViaName(SearchModeratorViaNameRequest request);
+
+        Task<Response<bool>> EditModerator(EditScholarshipModeratorRequest request);
+
+        Task<ScholarshipModeratorResponse?> GetModeratorById(int id);
     }
 }

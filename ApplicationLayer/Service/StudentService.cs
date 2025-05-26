@@ -8,8 +8,10 @@ using Contracts.DataLayer;
 using Contracts.InfrastructureLayer;
 using DomainLayer.Common;
 using DomainLayer.DTO.Common;
+using DomainLayer.DTO.ScholarshipModerator;
 using DomainLayer.DTO.Student;
 using DomainLayer.Entity;
+using DomainLayer.Errors.AuthenticationErrors;
 
 namespace ApplicationLayer.Service
 {
@@ -39,6 +41,25 @@ namespace ApplicationLayer.Service
 
         }
 
+        public async Task<Response<MessageResponse>> EditStudent(EditStudentRequest request)
+        {
+            var result = await _studentRepo.EditStudent(request);
+            return Response<MessageResponse>.Success(new()
+            {
+                Message = "Student Updated Successfuly"
+            });
+        }
+
+        public async Task<Response<StudentResponse>> GetStudentById(int id)
+        {
+            var student = await _studentRepo.GetStudentById(id);
+            if(student == null)
+            {
+                return Response<StudentResponse>.Failure(AccountErrorHelper.UserNotFoundError());
+            }
+            return Response<StudentResponse>.Success(student);
+        }
+
         public async Task<GetStudentsResponse> GetStudents(GetStudentsRequest request)
         {
             var result = await _studentRepo.GetStudents(request);
@@ -51,7 +72,5 @@ namespace ApplicationLayer.Service
             var result = await _studentRepo.SearchStudentViaName(request);
             return result;
         }
-
-
     }
 }

@@ -19,5 +19,9 @@ namespace Contracts.ApplicationLayer.Interface
         Task<GetModeratorsResponse> GetModerators(GetModeratorsRequest request);
 
         Task<GetModeratorsResponse> SearchModeratorsViaName(SearchModeratorViaNameRequest request);
+
+        Task<Response<MessageResponse>> EditModerator(EditScholarshipModeratorRequest request);
+
+        Task<Response<ScholarshipModeratorResponse>> GetModeratorById(int id);
     }
 }

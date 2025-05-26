@@ -7,6 +7,10 @@ using MVCPresentationLayer.Extensions;
 using MVCPresentationLayer.Helpers;
 using MVCPresentationLayer.ViewModels.ScholarshipModerator;
 using DomainLayer.DTO.ScholarshipModerator;
+using System.Threading.Tasks;
+using ApplicationLayer.Service;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using MVCPresentationLayer.ViewModels.Student;
 
 namespace MVCPresentationLayer.Controllers
 {
@@ -70,18 +74,68 @@ namespace MVCPresentationLayer.Controllers
 
         [HttpPost]
         [Authorize(Roles = "SuperModerator")]
-        public async Task<IActionResult> CreateScholarshipModerator(CreateScholarshipModeratorViewModel request)
+        public async Task<IActionResult> EditModerator(EditScholarshipModeratorViewModel request)
         {
             try
             {
                 if(!ModelState.IsValid)
                 {
                     TempData["ErrorMessage"] = ModelState.GetFirstErrorMessage();
+                    return RedirectToAction("Edit", new { id = request.ModeratorId });
+                }
+
+                var result = await _scholarshipModeratorService.EditModerator(_mapper.Map<EditScholarshipModeratorRequest>(request));
+
+                TempData["SuccessMessage"] = result.Value!.Message;
+                return RedirectToAction("Edit", new { id = request.ModeratorId });
+
+            }
+            catch (Exception ex)
+            {
+                return OnUnknowException(ex, nameof(EditModerator));
+            }
+
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "SuperModerator")]
+        public async Task<IActionResult> Edit(int id)
+        {
+            try
+            {
+                var moderator = await _scholarshipModeratorService.GetModeratorById(id);
+                if (!moderator.IsSuccess)
+                {
+                    TempData["ErrorMessage"] = moderator.ServiceError!.Message;
+                    return RedirectToAction("Index");
+                }
+                ViewBag.SuccessMessage = TempData["SuccessMessage"];
+                ViewBag.ErrorMessage = TempData["ErrorMessage"];
+                var viewModel = _mapper.Map<EditScholarshipModeratorViewModel>(moderator.Value);
+                return View(viewModel);
+
+            }
+            catch (Exception ex)
+            {
+                return OnUnknowException(ex, nameof(Create));
+            }
+
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "SuperModerator")]
+        public async Task<IActionResult> CreateScholarshipModerator(CreateScholarshipModeratorViewModel request)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    TempData["ErrorMessage"] = ModelState.GetFirstErrorMessage();
                     return RedirectToAction("Create", request);
                 }
 
                 var result = await _scholarshipModeratorService.AddScholarshipModerator(_mapper.Map<ScholarshipModerator>(request));
-                if(!result.IsSuccess)
+                if (!result.IsSuccess)
                 {
                     TempData["ErrorMessage"] = result.ServiceError!.Message;
                     return RedirectToAction("Create", request);
@@ -89,7 +143,7 @@ namespace MVCPresentationLayer.Controllers
 
                 TempData["SuccessMessage"] = result.Value!.Message;
                 return RedirectToAction("Create");
-                
+
             }
             catch (Exception ex)
             {

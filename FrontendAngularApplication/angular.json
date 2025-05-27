@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "FrontendApplication": {
+    "FrontendAngularApplication": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -23,7 +23,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/frontend-application",
+            "outputPath": "dist/frontend-angular-application",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -69,15 +69,15 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "FrontendApplication:build:production"
+              "buildTarget": "FrontendAngularApplication:build:production"
             },
             "development": {
-              "buildTarget": "FrontendApplication:build:development"
+              "buildTarget": "FrontendAngularApplication:build:development"
             }
           },
           "defaultConfiguration": "development",
           "options": {
-            "port": 62930
+            "port": 59389
           }
         },
         "extract-i18n": {

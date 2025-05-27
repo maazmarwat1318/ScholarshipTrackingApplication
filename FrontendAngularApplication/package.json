@@ -1,5 +1,5 @@
 {
-  "name": "frontend-application",
+  "name": "frontend-angular-application",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",

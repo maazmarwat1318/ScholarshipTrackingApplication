@@ -50,16 +50,16 @@ namespace ApplicationLayer.Service
             });
         }
 
-        public async Task<GetModeratorsResponse> GetModerators(GetModeratorsRequest request)
+        public async Task<Response<GetModeratorsResponse>> GetModerators(GetModeratorsRequest request)
         {
             var result = await _scholarshipModeratorRepo.GetModerators(request);
-            return result;
+            return Response<GetModeratorsResponse>.Success(result);
 
         }
-        public async Task<GetModeratorsResponse> SearchModeratorsViaName(SearchModeratorViaNameRequest request)
+        public async Task<Response<GetModeratorsResponse>> SearchModeratorsViaName(SearchModeratorViaNameRequest request)
         {
             var result = await _scholarshipModeratorRepo.SearchModeratosViaName(request);
-            return result;
+            return Response<GetModeratorsResponse>.Success(result);
         }
 
         public async Task<Response<ScholarshipModeratorResponse>> GetModeratorById(int id)

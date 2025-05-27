@@ -60,17 +60,17 @@ namespace ApplicationLayer.Service
             return Response<StudentResponse>.Success(student);
         }
 
-        public async Task<GetStudentsResponse> GetStudents(GetStudentsRequest request)
+        public async Task<Response<GetStudentsResponse>> GetStudents(GetStudentsRequest request)
         {
             var result = await _studentRepo.GetStudents(request);
-            return result;
+            return Response<GetStudentsResponse>.Success(result);
 
         }
 
-        public async Task<GetStudentsResponse> SearchStudentViaName(SearchStudentsViaNameRequest request)
+        public async Task<Response<GetStudentsResponse>> SearchStudentViaName(SearchStudentsViaNameRequest request)
         {
             var result = await _studentRepo.SearchStudentViaName(request);
-            return result;
+            return Response<GetStudentsResponse>.Success(result);
         }
     }
 }

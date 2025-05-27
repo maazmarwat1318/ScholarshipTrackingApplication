@@ -18,7 +18,7 @@ namespace Contracts.ApplicationLayer.Interface
 
         Task<Response<MessageResponse>> ResetPassword(ResetPasswordRequest request);
 
-        Task DeleteUser(int id);
+        Task<Response<MessageResponse>> DeleteUser(int id);
 
         
 

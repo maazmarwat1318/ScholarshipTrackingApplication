@@ -111,9 +111,13 @@ namespace ApplicationLayer.Service
             return Response<MessageResponse>.Success(new MessageResponse());
         }
 
-        public async Task DeleteUser(int id)
+        public async Task<Response<MessageResponse>> DeleteUser(int id)
         {
             await _userRepo.DeleteUser(id);
+            return Response<MessageResponse>.Success(new()
+            {
+                Message = "User Deleted Successfuly"
+            });
         }
     }
 }

@@ -1,0 +1,30 @@
+<div>
+	<form [formGroup]="loginForm" (ngSubmit)="onSubmit($event)" method="post">
+        <div class="mb-2">
+            <email-input [inputControl]="loginForm.controls.email"></email-input>
+        </div>
+        <div class="mb-2">
+            <password-input [inputControl]="loginForm.controls.password"></password-input>
+        </div>
+		<div class="d-flex justify-content-end mb-3">
+			<a class="link-primary" asp-controller="Account" asp-action="ForgotPassword">
+				Forgot Password!
+			</a>
+		</div>
+
+		<div class="d-flex justify-content-center">
+			<button [disabled]="isFormLoading()" id="form-btn" type="submit" class="btn btn-primary w-100" style="max-width: 250px">
+				<span [class.visually-hidden]="!isFormLoading()" class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
+				Log in
+			</button>
+		</div>
+		<!-- <div>
+			<label class="visually-hidden" asp-for="CaptchaToken" ></label>
+			<input class="form-control visually-hidden" asp-for="CaptchaToken" />
+			<span class="invalid-feedback mt-2" asp-validation-for="CaptchaToken"></span>
+		</div> -->
+		<!-- <div class="g-recaptcha mt-2 d-flex justify-content-center"
+			 data-sitekey="@ViewBag.CaptchaKey"
+			 data-callback="onCaptchaVerified"></div> -->
+	</form>
+</div>

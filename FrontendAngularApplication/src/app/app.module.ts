@@ -1,8 +1,12 @@
-import { NgModule } from '@angular/core';
+import { inject, NgModule, provideAppInitializer } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import {CookieService} from 'ngx-cookie-service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AppInitialization } from './Initialization/AppInitialization';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CommonModule } from './Common/common.module';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -10,9 +14,16 @@ import { AppComponent } from './app.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
   ],
-  providers: [],
+  providers: [
+    CookieService,
+    provideHttpClient(withFetch()),
+    provideAppInitializer(() => {
+      const initializationService = inject(AppInitialization);
+      return initializationService.onInit();
+    })
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

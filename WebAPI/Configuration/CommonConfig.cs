@@ -4,6 +4,7 @@ using DataLayer;
 using InfrastructureLayer.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 namespace WebAPI.Configuration
 {
     internal static partial class Configuration
@@ -21,6 +22,29 @@ namespace WebAPI.Configuration
         {
 
             return serviceCollection.AddHttpClient();
+        }
+
+        public static IServiceCollection ConfigureCORS(this IServiceCollection serviceCollection)
+        {
+            
+            return serviceCollection.AddCors(options =>
+            {
+                options.AddPolicy("AllowFrontend", policy =>
+                {
+                    policy.AllowAnyOrigin()
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                });
+            });
+        }
+
+        public static IServiceCollection SupressAutoValidationResponse(this IServiceCollection serviceCollection)
+        {
+
+            return serviceCollection.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
         }
 
     }

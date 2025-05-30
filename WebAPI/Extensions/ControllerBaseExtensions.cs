@@ -12,7 +12,7 @@ namespace WebAPI.Extensions
 
         public static IActionResult BadRequestErrorResponse(this ControllerBase controller)
         {
-            return controller.BadRequest(CommonErrorHelper.BadRequestError(controller.ModelState.GetFirstErrorMessage()));
+            return controller.BadRequest(CommonErrorHelper.BadRequestError(controller.ModelState.GetFirstErrorMessage()).ToHttpResponse());
         }
 
         public static IActionResult SuccessObjectToHttpResponse(this ControllerBase controller, object successResponse)

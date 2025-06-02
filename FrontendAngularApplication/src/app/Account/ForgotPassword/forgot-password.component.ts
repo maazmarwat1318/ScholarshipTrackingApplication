@@ -15,22 +15,17 @@ import { SnackbarService } from '../../Common/Alerts/Snackbar/SnackbarService';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { UserService } from '../../Services/UserService';
-declare const grecaptcha: any;
 @Component({
   selector: 'login',
-  templateUrl: './login.component.html',
+  templateUrl: './forgot-password.component.html',
   standalone: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginComponent implements OnInit, OnDestroy {
-  public loginForm = new FormGroup({
+export class ForgotPasswordComponent {
+  public forgotPasswordForm = new FormGroup({
     email: new FormControl<string>(''),
-    password: new FormControl<string>(''),
   });
   isFormLoading = signal(false);
-  showCaptchaUnverifiedError = signal(false);
-  captchaKey = environment.captcha.key;
-  captchaToken = '';
   constructor(
     private _accountSectionMetaData: AccountSectionMetaData,
     private _pageTitle: Title,
@@ -41,53 +36,34 @@ export class LoginComponent implements OnInit, OnDestroy {
     private _userService: UserService,
   ) {
     _accountSectionMetaData.sectionSubtitle.set(
-      'Enter your email and password to login',
+      'Enter your email to get a reset password email',
     );
-    _accountSectionMetaData.sectionTitle.set('Login');
-    _pageTitle.setTitle('Login');
+    _accountSectionMetaData.sectionTitle.set('Forgot Password');
+    _pageTitle.setTitle('Forgot Password');
   }
 
   onSubmit = async (event: Event) => {
     event.preventDefault();
-    this.loginForm.markAllAsTouched();
-    if (this.captchaToken.length === 0) {
-      this.showCaptchaUnverifiedError.set(true);
-    }
-    if (this.loginForm.valid && !this.showCaptchaUnverifiedError()) {
-      const requestBody = {
-        ...this.loginForm.value,
-        captchaToken: this.captchaToken,
-      };
+    this.forgotPasswordForm.markAllAsTouched();
+    if (this.forgotPasswordForm.valid) {
       this.isFormLoading.set(true);
       this._httpClient
-        .post('https://localhost:7222/Account/Login', requestBody)
+        .post(
+          'https://localhost:7222/Account/ForgotPassword',
+          this.forgotPasswordForm.value,
+        )
         .subscribe(
           (response) => {
-            this._userService.onSetAuthCookie((response as any).token);
-            this.isFormLoading.set(false);
-            this._router.navigateByUrl('');
+            this.snackbarService.showSuccessSnackbar(
+              'A reset password email has been sent successfuly at your address. Please reset your password and log in',
+            );
+            this._router.navigateByUrl('account/login');
           },
           (error) => {
             this.snackbarService.showErrorSnackbar(error.error.message);
-            (grecaptcha as any).reset();
             this.isFormLoading.set(false);
           },
         );
     }
   };
-
-  onCaptchaVerified(token: string) {
-    this.captchaToken = token;
-    this.showCaptchaUnverifiedError.set(false);
-  }
-
-  ngOnInit(): void {
-    this._scriptLoader.loadScript(environment.captcha.script).then(() => {
-      (window as any).onCaptchaVerified = this.onCaptchaVerified.bind(this);
-    });
-  }
-
-  ngOnDestroy(): void {
-    delete (window as any).onCaptchaVerified;
-  }
 }

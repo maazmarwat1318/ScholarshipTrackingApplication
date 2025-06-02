@@ -1,17 +1,15 @@
-import { Injectable } from "@angular/core";
-import { UserService } from "../Services/UserService";
+import { Injectable } from '@angular/core';
+import { UserService } from '../Services/UserService';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class AppInitialization {
-    constructor(private _userService: UserService) {
+  constructor(private _userService: UserService) {}
 
-    }
+  onInit = async () => {
+    await this.loadUserCookie();
+  };
 
-    onInit = async () => {
-        await this.loadUserCookie();
-    }
-
-    private loadUserCookie = async () => {
-       await this._userService.onLoadAuthCookie();
-    }
+  private loadUserCookie = async () => {
+    await this._userService.onLoadAuthCookie();
+  };
 }

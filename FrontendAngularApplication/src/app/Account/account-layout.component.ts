@@ -6,13 +6,20 @@ import { AccountSectionMetaData } from './State/AccountSectionMetaData';
   selector: 'account-component',
   templateUrl: './account.component.html',
   standalone: false,
-  styleUrl: './account.component.css'
+  styleUrl: './account.component.css',
 })
 export class AccountLayoutComponent {
   sectionTitle: Signal<string>;
   sectionSubtitle: Signal<string>;
-  constructor(private _userService: UserService, private _accountSectionMetaData: AccountSectionMetaData){
-    this.sectionSubtitle = computed(() => _accountSectionMetaData.sectionSubtitle()),
-    this.sectionTitle = computed(() => _accountSectionMetaData.sectionTitle())
+  constructor(
+    private _userService: UserService,
+    private _accountSectionMetaData: AccountSectionMetaData,
+  ) {
+    (this.sectionSubtitle = computed(() =>
+      _accountSectionMetaData.sectionSubtitle(),
+    )),
+      (this.sectionTitle = computed(() =>
+        _accountSectionMetaData.sectionTitle(),
+      ));
   }
 }

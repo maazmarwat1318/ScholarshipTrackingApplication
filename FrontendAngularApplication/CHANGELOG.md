@@ -1,9 +1,11 @@
 This file explains how Visual Studio created the project.
 
 The following tools were used to generate this project:
+
 - Angular CLI (ng)
 
 The following steps were used to generate this project:
+
 - Create Angular project with ng: `ng new FrontendAngularApplication --defaults --skip-install --skip-git --no-standalone `.
 - Update angular.json with port.
 - Create project file (`FrontendAngularApplication.esproj`).

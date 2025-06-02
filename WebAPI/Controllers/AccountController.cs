@@ -41,7 +41,6 @@ namespace WebAPI.Controllers
                     return this.BadRequestErrorResponse();
                 }
 
-
                 var response = await _authService.Login(_mapper.Map<LogInRequest>(request));
                 if (!response.IsSuccess)
                 {

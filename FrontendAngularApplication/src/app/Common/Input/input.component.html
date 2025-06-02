@@ -1,4 +1,14 @@
-
-    <label class="form-label" [for]="inputFor()">{{inputLabel()}}:</label>
-    <input [class.is-valid]="inputControl().valid && inputControl().touched" [class.is-invalid]="inputControl().invalid && inputControl().touched" class="form-control" [name]="inputFor()" [type]="inputType" [placeholder]="inputPlaceholder()" [formControl]="inputControl()"/>
-    <input-error [inputControl]="inputControl()" [errorMessagesDictionary]="errorMessages"></input-error>
+<label class="form-label" [for]="inputFor()">{{ inputLabel() }}:</label>
+<input
+  [class.is-valid]="inputControl().valid && inputControl().touched"
+  [class.is-invalid]="inputControl().invalid && inputControl().touched"
+  class="form-control"
+  [name]="inputFor()"
+  [type]="inputType"
+  [placeholder]="inputPlaceholder()"
+  [formControl]="inputControl()"
+/>
+<input-error
+  [inputControl]="inputControl()"
+  [errorMessagesDictionary]="errorMessages"
+></input-error>

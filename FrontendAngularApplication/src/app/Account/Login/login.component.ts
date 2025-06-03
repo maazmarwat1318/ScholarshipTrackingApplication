@@ -65,7 +65,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           (response) => {
             this._userService.onSetAuthCookie((response as any).token);
             this.isFormLoading.set(false);
-            this._router.navigateByUrl('');
+            this._router.navigateByUrl('/');
           },
           (error) => {
             this.snackbarService.showErrorSnackbar(error.error.message);

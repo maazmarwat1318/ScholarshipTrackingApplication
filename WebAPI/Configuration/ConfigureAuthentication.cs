@@ -30,15 +30,6 @@ namespace WebAPI.Configuration
                     ValidAudience = jwtOptions.Audience,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SecretKey))
                 };
-                options.Events = new JwtBearerEvents
-                {
-                    OnChallenge = context =>
-                    {
-                        context.HandleResponse();
-                        context.Response.Redirect("/Account/Login?restrict=" + "true");
-                        return Task.CompletedTask;
-                    },
-                };
             });
 
             serviceCollection.AddAuthorization();

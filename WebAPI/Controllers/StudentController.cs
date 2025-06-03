@@ -42,16 +42,16 @@ namespace WebAPI.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    model.Page = 1;
+                    return this.BadRequestErrorResponse();
                 }
 
-
-                var response = model.SearchString == "" ? await _studentService.GetStudents(_mapper.Map<GetStudentsRequest>(model)) : await _studentService.SearchStudentViaName(_mapper.Map<SearchStudentsViaNameRequest>(model));
+                var response = model.SearchString == null ? await _studentService.GetStudents(_mapper.Map<GetStudentsRequest>(model)) : await _studentService.SearchStudentViaName(_mapper.Map<SearchStudentsViaNameRequest>(model));
                 if(!response.IsSuccess)
                 {
                     return this.ErrorToHttpResponse(response.ServiceError!);
                 }
-                return this.SuccessObjectToHttpResponse(response.Value!);
+                var val = this.SuccessObjectToHttpResponse(response.Value!);
+                return val;
             }
             catch (Exception ex)
             {
@@ -60,7 +60,7 @@ namespace WebAPI.Controllers
 
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         [Authorize(Roles = "SuperModerator, Moderator")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {

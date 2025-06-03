@@ -10,7 +10,7 @@ namespace DomainLayer.DTO.Student
 {
     public class GetStudentsResponse
     {
-        public List<StudentResponseWithDegree> Students = [];
+        public List<StudentResponseWithDegree> Students { get; set; } = [];
         
         public required int Page {  get; set; }
 

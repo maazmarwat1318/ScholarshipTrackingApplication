@@ -3,12 +3,13 @@ import { NameInputComponent } from './Input/name-input.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PasswordInputComponent } from './Input/password-input.component';
 import { EmailInputComponent } from './Input/email-input.component';
-import { NgIf } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { InputError } from './Input/input-error.component';
-import { PrimaryBtnComponent } from './Buttons/primary-btn.component';
-import { NgbToast } from '@ng-bootstrap/ng-bootstrap';
 import { SnackbarComponent } from './Alerts/Snackbar/snackbar.component';
 import { SnackbarService } from './Alerts/Snackbar/SnackbarService';
+import { ActionDialogComponent } from './Alerts/ActionDialog/action-dialog.component';
+import { LoadingBtnComponent } from './Buttons/loading-btn.component';
+import { ActionDialogService } from './Alerts/ActionDialog/ActionDialogService';
 
 @NgModule({
   declarations: [
@@ -16,19 +17,23 @@ import { SnackbarService } from './Alerts/Snackbar/SnackbarService';
     PasswordInputComponent,
     EmailInputComponent,
     InputError,
-    PrimaryBtnComponent,
+    LoadingBtnComponent,
     SnackbarComponent,
+    ActionDialogComponent,
   ],
   exports: [
     NameInputComponent,
     ReactiveFormsModule,
     PasswordInputComponent,
     EmailInputComponent,
+    InputError,
     NgIf,
-    PrimaryBtnComponent,
+    LoadingBtnComponent,
     SnackbarComponent,
+    ActionDialogComponent,
+    NgFor,
   ],
-  imports: [ReactiveFormsModule, NgIf],
+  imports: [ReactiveFormsModule, NgIf, NgFor],
   providers: [SnackbarService],
 })
 export class CommonModule {}

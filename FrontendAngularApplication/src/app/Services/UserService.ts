@@ -16,6 +16,11 @@ export class UserService {
     let cookie = this._cookieService.get(Cookies.AuthToken);
     if (!cookie) return;
     this.authToken = cookie;
+    const { email, name, nameIdentifier, role } = this.extractClaims(cookie);
+    this.userEmail = email;
+    this.userName = name;
+    this.userId = nameIdentifier;
+    this.userRole = role;
   };
 
   onDeleteAuthCookie = async () => {
@@ -41,6 +46,20 @@ export class UserService {
 
   isAuthenticated = () => {
     return this.authToken !== null;
+  };
+
+  isModerator = () => {
+    return (
+      this.userRole === Role.Moderator || this.userRole === Role.SuperModerator
+    );
+  };
+
+  isStudent = () => {
+    return this.userRole === Role.Student;
+  };
+
+  isSuperModerator = () => {
+    return this.userRole === Role.SuperModerator;
   };
 
   private decodeJwt(token: string) {

@@ -17,6 +17,7 @@ import { LoadingBtnComponent } from './Buttons/loading-btn.component';
 import { ActionDialogService } from './Alerts/ActionDialog/ActionDialogService';
 import { ContentDialogComponent } from './Alerts/ContentDialog/content-dialog.component';
 import { DegreeSelectComponent } from './Input/degree-select.component';
+import { RoleSelectComponent } from './Input/role-select.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { DegreeSelectComponent } from './Input/degree-select.component';
     ActionDialogComponent,
     ContentDialogComponent,
     DegreeSelectComponent,
+    RoleSelectComponent,
   ],
   exports: [
     NameInputComponent,
@@ -44,6 +46,7 @@ import { DegreeSelectComponent } from './Input/degree-select.component';
     ContentDialogComponent,
     NgTemplateOutlet,
     DegreeSelectComponent,
+    RoleSelectComponent,
   ],
   imports: [ReactiveFormsModule, NgIf, NgFor, NgTemplateOutlet],
   providers: [SnackbarService],

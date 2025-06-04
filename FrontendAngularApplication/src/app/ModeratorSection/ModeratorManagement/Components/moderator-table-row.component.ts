@@ -5,12 +5,12 @@ import { UserService } from '../../../Services/UserService';
 import { SnackbarService } from '../../../Common/Alerts/Snackbar/SnackbarService';
 
 @Component({
-  selector: '[student-table-row]',
+  selector: '[moderator-table-row]',
   template: ` <th scope="row">{{ index() }}</th>
     <td>{{ firstName() }}</td>
     <td>{{ lastName() }}</td>
     <td>{{ email() }}</td>
-    <td>{{ degreeTitle() }}</td>
+    <td>{{ role() }}</td>
     <td>
       <div class="d-flex gap-2 align-items-center">
         <a
@@ -30,14 +30,14 @@ import { SnackbarService } from '../../../Common/Alerts/Snackbar/SnackbarService
     </td>`,
   standalone: false,
 })
-export class StudentTableRow {
+export class ModeratorTableRow {
   firstName = input.required<string>();
   lastName = input.required<string>();
   id = input.required<number>();
   email = input.required<string>();
-  degreeTitle = input.required<string>();
+  role = input.required<string>();
   index = input.required<number>();
-  studentDeleted = output<void>();
+  moderatorDeleted = output<void>();
   constructor(
     public actionDialogService: ActionDialogService,
     public _httpClient: HttpClient,
@@ -52,20 +52,20 @@ export class StudentTableRow {
       'Delete',
       'danger',
       () => {
-        this.deleteStudent(this.id());
+        this.deleteModerator(this.id());
       },
     );
   }
 
-  deleteStudent(id: number) {
+  deleteModerator(id: number) {
     this.actionDialogService.isLoading.set(true);
     this._httpClient
-      .delete(`https://localhost:7222/Student/${id}`, {
+      .delete(`https://localhost:7222/ScholarshipModerator/${id}`, {
         headers: { Authorization: `Bearer ${this._userService.authToken!}` },
       })
       .subscribe(
         (response) => {
-          this.studentDeleted.emit();
+          this.moderatorDeleted.emit();
           this.actionDialogService.hideDialog();
         },
         (error) => {

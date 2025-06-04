@@ -29,13 +29,6 @@ import { ActionDialogService } from './ActionDialogService';
           </div>
           <div class="modal-body">
             {{ actionDialogService.message() }}
-            <div
-              class="spinner-border mt-3"
-              role="status"
-              *ngIf="actionDialogService.isLoading()"
-            >
-              <span class="visually-hidden">Loading...</span>
-            </div>
           </div>
           <div class="modal-footer">
             <button

@@ -1,7 +1,7 @@
 import { Component, input, model } from '@angular/core';
 
 @Component({
-  selector: 'student-table',
+  selector: 'moderator-table',
   standalone: false,
   template: ` <div class="table-responsive-xl">
     <table class="table table-striped">
@@ -11,20 +11,20 @@ import { Component, input, model } from '@angular/core';
           <th class="single-line" scope="col">First Name</th>
           <th class="single-line" scope="col">Last Name</th>
           <th class="single-line" scope="col">Email</th>
-          <th class="single-line" scope="col">Degree</th>
+          <th class="single-line" scope="col">Role</th>
           <th class="single-line" scope="col">Actions</th>
         </tr>
       </thead>
       <tbody>
-        @for (student of students(); track student.id; let ind = $index) {
+        @for (moderator of moderators(); track moderator.id; let ind = $index) {
           <tr
-            (studentDeleted)="onStudentDeleted(ind)"
-            student-table-row
-            [firstName]="student.firstName"
-            [lastName]="student.lastName"
-            [email]="student.email"
-            [degreeTitle]="student.degreeTitle"
-            [id]="student.id"
+            (moderatorDeleted)="onModeratorDeleted(ind)"
+            moderator-table-row
+            [firstName]="moderator.firstName"
+            [lastName]="moderator.lastName"
+            [email]="moderator.email"
+            [role]="moderator.role"
+            [id]="moderator.id"
             [index]="getIndex(ind)"
           ></tr>
         }
@@ -32,8 +32,8 @@ import { Component, input, model } from '@angular/core';
     </table>
   </div>`,
 })
-export class StudentTableComponent {
-  students = model.required<any[]>();
+export class ModeratorTableComponent {
+  moderators = model.required<any[]>();
   currentPage = input.required<number>();
   pageSize = input.required<number>();
   getIndex(ind: number) {
@@ -43,7 +43,7 @@ export class StudentTableComponent {
     return result;
   }
 
-  onStudentDeleted(index: number) {
-    this.students().splice(index, 1);
+  onModeratorDeleted(index: number) {
+    this.moderators().splice(index, 1);
   }
 }

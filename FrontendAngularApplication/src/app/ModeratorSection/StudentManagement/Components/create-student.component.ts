@@ -45,7 +45,7 @@ declare const grecaptcha: any;
             [inputControl]="createStudentForm.controls.lastName"
           ></name-input>
         </div>
-        <div class="mb-2">
+        <div class="mb-4">
           <degree-select
             [degreeControl]="createStudentForm.controls.degreeId"
           />

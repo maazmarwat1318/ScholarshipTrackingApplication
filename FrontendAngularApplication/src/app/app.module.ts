@@ -16,9 +16,9 @@ import { ScriptLoaderService } from './Services/ScriptLoader';
     CookieService,
     ScriptLoaderService,
     provideHttpClient(withFetch()),
-    provideAppInitializer(() => {
+    provideAppInitializer(async () => {
       const initializationService = inject(AppInitialization);
-      return initializationService.onInit();
+      return await initializationService.onInit();
     }),
   ],
   bootstrap: [AppComponent],

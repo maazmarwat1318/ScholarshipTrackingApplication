@@ -12,7 +12,7 @@ namespace WebAPI.ViewModels.ScholarshipModerator
 
         public int PageSize { get; set; } = 10;
 
-        public string SearchString { get; set; } = "";
+        public string? SearchString { get; set; } = "";
 
     }
 }

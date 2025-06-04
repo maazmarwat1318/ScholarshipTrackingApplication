@@ -23,14 +23,4 @@ import { ContentDialogService } from '../../Common/Alerts/ContentDialog/ContentD
   template: ` <router-outlet></router-outlet> `,
   standalone: false,
 })
-export class ManageStudentsComponent {
-  students = signal<any[]>([]);
-  page = signal(1);
-  searchString = signal('');
-  pageSize = 10;
-  isLastPage = signal(false);
-  isFirstPage = computed(() => this.page() === 1);
-  isFetchLoading = signal(false);
-  error = signal<any>(undefined);
-  constructor(private _titleService: TitleService) {}
-}
+export class ManageStudentsComponent {}

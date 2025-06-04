@@ -38,7 +38,6 @@ namespace WebAPI.Controllers
         [Authorize(Roles = "SuperModerator, Moderator")]
         public async Task<IActionResult> Index([FromQuery] GetStudentsViewModel model)
         {
-            throw new Exception();
             try
             {
                 if (!ModelState.IsValid)

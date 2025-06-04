@@ -19,9 +19,9 @@ import { SnackbarService } from '../../../Common/Alerts/Snackbar/SnackbarService
 import { ContentDialogService } from '../../../Common/Alerts/ContentDialog/ContentDialogService';
 
 @Component({
-  selector: 'view-students',
+  selector: 'view-moderators',
   template: `
-    @if (isFetchLoading() && page() === 1 && students().length === 0) {
+    @if (isFetchLoading() && page() === 1 && moderators().length === 0) {
       <div
         class="min-full-height-inside-main-layout d-flex align-items-center justify-content-center"
       >
@@ -31,7 +31,7 @@ import { ContentDialogService } from '../../../Common/Alerts/ContentDialog/Conte
         ></div>
       </div>
     } @else if (
-      error() !== undefined && page() === 1 && students().length === 0
+      error() !== undefined && page() === 1 && moderators().length === 0
     ) {
       <div
         class="alert alert-danger mx-auto text-center"
@@ -47,22 +47,22 @@ import { ContentDialogService } from '../../../Common/Alerts/ContentDialog/Conte
       </div>
     } @else {
       <div class="d-flex justify-content-end align-items-center mb-3 gap-2">
-        <student-search-field
+        <moderator-search-field
           [searchParam]="searchString()"
           (searchClicked)="this.goToPage(1, $event)"
         />
-        <button class="btn btn-success" routerLink="create">
-          + Create Student
+        <button class="btn btn-success" routerLink="../create">
+          + Create Moderator
         </button>
       </div>
-      @if (students().length === 0) {
-        <p class="text-center text-muted">No students found</p>
+      @if (moderators().length === 0) {
+        <p class="text-center text-muted">No moderators found</p>
       } @else {
-        <student-table
-          [(students)]="students"
+        <moderator-table
+          [(moderators)]="moderators"
           [pageSize]="pageSize"
           [currentPage]="page()"
-        ></student-table>
+        ></moderator-table>
       }
       <div class="d-flex justify-content-center gap-2">
         <button
@@ -84,8 +84,8 @@ import { ContentDialogService } from '../../../Common/Alerts/ContentDialog/Conte
   `,
   standalone: false,
 })
-export class ViewStudentsComponent implements OnDestroy {
-  students = signal<any[]>([]);
+export class ViewModeratorsComponent implements OnDestroy {
+  moderators = signal<any[]>([]);
   page = signal(1);
   searchString = signal('');
   pageSize = 10;
@@ -102,7 +102,7 @@ export class ViewStudentsComponent implements OnDestroy {
     private _activatedRoute: ActivatedRoute,
     private _router: Router,
   ) {
-    _titleService.setTitle('View Students');
+    _titleService.setTitle('View Moderators');
     _activatedRoute.queryParams.subscribe((params) => {
       _snackbarService.hideSnackbar();
       _dialogService.hideDialog();
@@ -121,7 +121,7 @@ export class ViewStudentsComponent implements OnDestroy {
     this.isFetchLoading.set(true);
     this.error.set(undefined);
     this._httpClient
-      .get('https://localhost:7222/Student', {
+      .get('https://localhost:7222/ScholarshipModerator', {
         params: {
           page: page,
           searchString: searchString,
@@ -130,7 +130,7 @@ export class ViewStudentsComponent implements OnDestroy {
       })
       .subscribe(
         (response) => {
-          this.students.set((response as any).students);
+          this.moderators.set((response as any).moderators);
           this.isLastPage.set((response as any).lastPage);
           this.page.set(page);
         },

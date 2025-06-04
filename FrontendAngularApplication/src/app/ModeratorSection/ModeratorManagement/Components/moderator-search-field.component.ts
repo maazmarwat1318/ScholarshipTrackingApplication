@@ -2,7 +2,7 @@ import { Component, effect, input, model, output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'student-search-field',
+  selector: 'moderator-search-field',
   standalone: false,
   template: `
     <form
@@ -29,7 +29,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
     </form>
   `,
 })
-export class StudentSearchFieldComponent {
+export class ModeratorSearchFieldComponent {
   searchForm = new FormGroup({
     searchString: new FormControl('', { validators: Validators.required }),
   });

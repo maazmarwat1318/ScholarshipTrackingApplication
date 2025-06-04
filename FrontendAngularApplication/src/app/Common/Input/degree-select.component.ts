@@ -7,7 +7,7 @@ import { UserService } from '../../Services/UserService';
   selector: 'degree-select',
   standalone: false,
   template: `
-    <div class="mb-3">
+    <div>
       <label [for]="selectFor()" class="form-label">
         {{ selectLabel() }}
         <span *ngIf="required()" class="text-danger">*</span>

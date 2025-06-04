@@ -61,6 +61,20 @@ export class ModeratorSideNav {
         },
       ],
     },
+    {
+      name: 'Moderators',
+      path: 'moderators',
+      children: [
+        {
+          name: 'View Moderators',
+          path: 'view',
+        },
+        {
+          name: 'Create Moderator',
+          path: 'create',
+        },
+      ],
+    },
   ];
 
   constructor(private router: Router) {}

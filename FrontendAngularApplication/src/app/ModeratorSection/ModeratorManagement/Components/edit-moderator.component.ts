@@ -8,18 +8,18 @@ import { UserService } from '../../../Services/UserService';
 import { TitleService } from '../../Service/TitleService';
 
 @Component({
-  selector: 'edit-student',
+  selector: 'edit-moderator',
   standalone: false,
   template: `
     <div
       class="min-full-height-inside-main-layout d-flex align-items-center justify-content-center"
     >
       <div class="normal-form-width border border-1 rounded-2 p-3">
-        <div *ngIf="isFetchingStudent()" class="text-center p-5">
+        <div *ngIf="isFetchingModerator()" class="text-center p-5">
           <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading student...</span>
+            <span class="visually-hidden">Loading moderator...</span>
           </div>
-          <p class="mt-3">Loading student data...</p>
+          <p class="mt-3">Loading moderator data...</p>
         </div>
 
         <div *ngIf="fetchError()" class="alert alert-danger text-center">
@@ -29,36 +29,36 @@ import { TitleService } from '../../Service/TitleService';
           </button>
         </div>
 
-        <ng-container *ngIf="!isFetchingStudent() && !fetchError()">
-          <p class="h6 text-center mb-4">Edit Student Details</p>
+        <ng-container *ngIf="!isFetchingModerator() && !fetchError()">
+          <p class="h6 text-center mb-4">Edit Moderator Details</p>
           <form
-            [formGroup]="editStudentForm"
+            [formGroup]="editModeratorForm"
             (ngSubmit)="onSubmit($event)"
             method="post"
           >
-            <input type="hidden" formControlName="studentId" />
+            <input type="hidden" formControlName="moderatorId" />
 
             <div class="mb-2">
               <email-input
-                [inputControl]="editStudentForm.controls.email"
+                [inputControl]="editModeratorForm.controls.email"
               ></email-input>
             </div>
             <div class="mb-2">
               <name-input
                 inputLabel="First Name"
-                [inputControl]="editStudentForm.controls.firstName"
+                [inputControl]="editModeratorForm.controls.firstName"
               ></name-input>
             </div>
             <div class="mb-2">
               <name-input
                 inputLabel="Last Name"
-                [inputControl]="editStudentForm.controls.lastName"
+                [inputControl]="editModeratorForm.controls.lastName"
               ></name-input>
             </div>
-            <div class="mb-2">
-              <degree-select
-                [degreeControl]="editStudentForm.controls.degreeId"
-              ></degree-select>
+            <div class="mb-4">
+              <role-select
+                [roleControl]="editModeratorForm.controls.role"
+              ></role-select>
             </div>
 
             <div class="d-flex justify-content-center">
@@ -67,7 +67,7 @@ import { TitleService } from '../../Service/TitleService';
                 class="w-100 btn btn-primary"
                 style="max-width: 250px"
                 btnType="submit"
-                [disabled]="isFormLoading() || editStudentForm.invalid"
+                [disabled]="isFormLoading() || editModeratorForm.invalid"
                 [isLoading]="isFormLoading()"
                 (click)="onSubmit($event)"
               >
@@ -80,18 +80,18 @@ import { TitleService } from '../../Service/TitleService';
     </div>
   `,
 })
-export class EditStudentComponent implements OnInit, OnDestroy {
-  isFetchingStudent = signal(true);
+export class EditModeratorComponent implements OnInit, OnDestroy {
+  isFetchingModerator = signal(true);
   fetchError = signal<any>(null);
-  studentId!: number;
+  moderatorId!: number;
   private routeSubscription: Subscription | undefined;
 
-  public editStudentForm = new FormGroup({
-    studentId: new FormControl<any>(0, Validators.required),
+  public editModeratorForm = new FormGroup({
+    moderatorId: new FormControl<any>(0, Validators.required),
     email: new FormControl<any>('', [Validators.required, Validators.email]),
     firstName: new FormControl<any>('', Validators.required),
     lastName: new FormControl<any>('', Validators.required),
-    degreeId: new FormControl<any>(null, Validators.required),
+    role: new FormControl<any>(null, Validators.required),
   });
 
   isFormLoading = signal(false);
@@ -104,7 +104,7 @@ export class EditStudentComponent implements OnInit, OnDestroy {
     private _router: Router,
     private _activatedRoute: ActivatedRoute,
   ) {
-    this._titleService.setTitle('Edit Student');
+    this._titleService.setTitle('Edit Moderator');
   }
 
   ngOnInit(): void {
@@ -112,11 +112,11 @@ export class EditStudentComponent implements OnInit, OnDestroy {
       (params) => {
         const id = params.get('id');
         if (id) {
-          this.studentId = +id;
-          this.fetchStudentData();
+          this.moderatorId = +id;
+          this.fetchModeratorData();
         } else {
-          this.fetchError.set('Student ID not provided in URL.');
-          this.isFetchingStudent.set(false);
+          this.fetchError.set('Moderator ID not provided in URL.');
+          this.isFetchingModerator.set(false);
         }
       },
     );
@@ -128,8 +128,8 @@ export class EditStudentComponent implements OnInit, OnDestroy {
     }
   }
 
-  fetchStudentData(): void {
-    this.isFetchingStudent.set(true);
+  fetchModeratorData(): void {
+    this.isFetchingModerator.set(true);
     this.fetchError.set(null);
 
     let headers = new HttpHeaders();
@@ -141,39 +141,44 @@ export class EditStudentComponent implements OnInit, OnDestroy {
     }
 
     this._httpClient
-      .get<any>(`https://localhost:7222/Student/${this.studentId}`, { headers })
+      .get<any>(
+        `https://localhost:7222/ScholarshipModerator/${this.moderatorId}`,
+        {
+          headers,
+        },
+      )
       .subscribe({
-        next: (studentData) => {
-          this.editStudentForm.patchValue({
-            studentId: studentData.id,
-            email: studentData.email,
-            firstName: studentData.firstName,
-            lastName: studentData.lastName,
-            degreeId: studentData.degreeId,
+        next: (moderatorData) => {
+          this.editModeratorForm.patchValue({
+            moderatorId: moderatorData.id,
+            email: moderatorData.email,
+            firstName: moderatorData.firstName,
+            lastName: moderatorData.lastName,
+            role: moderatorData.role,
           });
-          this.isFetchingStudent.set(false);
+          this.isFetchingModerator.set(false);
         },
         error: (error) => {
-          console.error('Error fetching student:', error);
+          console.error('Error fetching moderator:', error);
           this.fetchError.set(
-            error.error?.message || 'Failed to fetch student data.',
+            error.error?.message || 'Failed to fetch moderator data.',
           );
-          this.isFetchingStudent.set(false);
+          this.isFetchingModerator.set(false);
           this.snackbarService.showErrorSnackbar(
-            'Failed to load student data.',
+            'Failed to load moderator data.',
           );
         },
       });
   }
 
   onRetryFetch(): void {
-    this.fetchStudentData();
+    this.fetchModeratorData();
   }
 
   onSubmit = async (event: Event) => {
     event.preventDefault();
-    this.editStudentForm.markAllAsTouched();
-    if (this.editStudentForm.valid) {
+    this.editModeratorForm.markAllAsTouched();
+    if (this.editModeratorForm.valid) {
       let headers = new HttpHeaders();
       if (this._userService.authToken) {
         headers = headers.set(
@@ -184,20 +189,22 @@ export class EditStudentComponent implements OnInit, OnDestroy {
       this.isFormLoading.set(true);
 
       const payload: any = {
-        studentId: this.editStudentForm.controls.studentId.value,
-        email: this.editStudentForm.controls.email.value,
-        firstName: this.editStudentForm.controls.firstName.value,
-        lastName: this.editStudentForm.controls.lastName.value,
-        degreeId: this.editStudentForm.controls.degreeId.value,
+        moderatorId: this.editModeratorForm.controls.moderatorId.value,
+        email: this.editModeratorForm.controls.email.value,
+        firstName: this.editModeratorForm.controls.firstName.value,
+        lastName: this.editModeratorForm.controls.lastName.value,
+        role: this.editModeratorForm.controls.role.value,
       };
 
       this._httpClient
-        .post(`https://localhost:7222/Student/Edit`, payload, { headers })
+        .post(`https://localhost:7222/ScholarshipModerator/Edit`, payload, {
+          headers,
+        })
         .subscribe({
           next: (response) => {
             this.isFormLoading.set(false);
             this.snackbarService.showSuccessSnackbar(
-              'Student updated successfully!',
+              'Moderator updated successfully!',
             );
           },
           error: (error) => {

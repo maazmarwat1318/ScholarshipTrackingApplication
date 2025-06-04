@@ -51,7 +51,7 @@ import { ContentDialogService } from '../../../Common/Alerts/ContentDialog/Conte
           [searchParam]="searchString()"
           (searchClicked)="this.goToPage(1, $event)"
         />
-        <button class="btn btn-success" routerLink="create">
+        <button class="btn btn-success" routerLink="../create">
           + Create Student
         </button>
       </div>

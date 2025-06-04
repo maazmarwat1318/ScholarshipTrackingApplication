@@ -12,5 +12,5 @@ import { Component, input } from '@angular/core';
 export class ModeratorSideNavTile {
   name = input.required<string>();
   path = input.required<string>();
-  isChild = input(false);
+  isChild = input(true);
 }

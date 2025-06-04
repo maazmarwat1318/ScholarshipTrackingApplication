@@ -14,7 +14,7 @@ namespace Contracts.DataLayer
 
         Task<Response<bool>> EditStudent(EditStudentRequest request);
 
-        Task<StudentResponse?> GetStudentById(int id);
+        Task<StudentResponseWithDegree?> GetStudentById(int id);
 
     }
 }

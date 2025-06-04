@@ -47,6 +47,11 @@
     white-space: nowrap;
 }
 
+.normal-form-width {
+        max-width: 400px;
+        width: 100%;
+ }
+
 .min-full-height-inside-main-layout {
     min-height: calc(100vh - 57px - 3rem);
     min-height: calc(100svh - 57px - 3rem);

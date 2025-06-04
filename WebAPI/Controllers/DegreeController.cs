@@ -33,10 +33,6 @@ namespace WebAPI.Controllers
         {
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    this.BadRequestErrorResponse();
-                }
 
                 var response = await _degreeService.GetAllDegrees();
                 if (!response.IsSuccess)

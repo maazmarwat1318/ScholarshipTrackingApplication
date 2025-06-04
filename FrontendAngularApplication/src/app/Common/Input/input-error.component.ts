@@ -25,7 +25,7 @@ import { FormControl, FormControlStatus, Validators } from '@angular/forms';
   `,
 })
 export class InputError {
-  @Input({ required: true }) inputControl!: FormControl<string | null>;
+  @Input({ required: true }) inputControl!: FormControl<any>;
   errorMessagesDictionary = input<{ [key: string]: string }>({});
 
   getErrorMessage() {

@@ -38,6 +38,7 @@ namespace WebAPI.Controllers
         [Authorize(Roles = "SuperModerator, Moderator")]
         public async Task<IActionResult> Index([FromQuery] GetStudentsViewModel model)
         {
+            throw new Exception();
             try
             {
                 if (!ModelState.IsValid)
@@ -47,6 +48,32 @@ namespace WebAPI.Controllers
 
                 var response = model.SearchString == null ? await _studentService.GetStudents(_mapper.Map<GetStudentsRequest>(model)) : await _studentService.SearchStudentViaName(_mapper.Map<SearchStudentsViaNameRequest>(model));
                 if(!response.IsSuccess)
+                {
+                    return this.ErrorToHttpResponse(response.ServiceError!);
+                }
+                var val = this.SuccessObjectToHttpResponse(response.Value!);
+                return val;
+            }
+            catch (Exception ex)
+            {
+                return OnUnknowException(ex, nameof(Create));
+            }
+
+        }
+
+        [HttpGet("{id}")]
+        [Authorize(Roles = "SuperModerator, Moderator")]
+        public async Task<IActionResult> Index([FromRoute] int id)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return this.BadRequestErrorResponse();
+                }
+
+                var response = await _studentService.GetStudentById(id);
+                if (!response.IsSuccess)
                 {
                     return this.ErrorToHttpResponse(response.ServiceError!);
                 }

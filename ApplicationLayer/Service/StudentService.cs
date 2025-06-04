@@ -50,14 +50,14 @@ namespace ApplicationLayer.Service
             });
         }
 
-        public async Task<Response<StudentResponse>> GetStudentById(int id)
+        public async Task<Response<StudentResponseWithDegree>> GetStudentById(int id)
         {
             var student = await _studentRepo.GetStudentById(id);
             if(student == null)
             {
-                return Response<StudentResponse>.Failure(AccountErrorHelper.UserNotFoundError());
+                return Response<StudentResponseWithDegree>.Failure(AccountErrorHelper.UserNotFoundError());
             }
-            return Response<StudentResponse>.Success(student);
+            return Response<StudentResponseWithDegree>.Success(student);
         }
 
         public async Task<Response<GetStudentsResponse>> GetStudents(GetStudentsRequest request)

@@ -20,6 +20,7 @@ namespace Contracts.ApplicationLayer.Interface
 
         Task<Response<MessageResponse>> EditStudent(EditStudentRequest request);
 
-        Task<Response<StudentResponse>> GetStudentById(int id);
+        Task<Response<StudentResponseWithDegree>> GetStudentById(int id);
+
     }
 }

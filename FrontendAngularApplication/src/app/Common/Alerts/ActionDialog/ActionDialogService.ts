@@ -39,7 +39,6 @@ export class ActionDialogService {
 
   triggerConfirmAction() {
     if (!this.isLoading() && this.confirmAction()) {
-      console.log(this.confirmAction());
       this.confirmAction()!();
     }
   }

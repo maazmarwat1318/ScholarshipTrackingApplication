@@ -10,8 +10,5 @@ import { TitleService } from './Service/TitleService';
 })
 export class ModeratorLayoutComponent {
   readonly title = computed<string>(() => this._titleService.title());
-  constructor(
-    private _userService: UserService,
-    public _titleService: TitleService,
-  ) {}
+  constructor(public _titleService: TitleService) {}
 }

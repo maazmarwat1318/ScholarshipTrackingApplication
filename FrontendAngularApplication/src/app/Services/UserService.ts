@@ -42,6 +42,7 @@ export class UserService {
     this.userName = name;
     this.userId = nameIdentifier;
     this.userRole = role;
+    this.authToken = cookie;
   };
 
   isAuthenticated = () => {
@@ -79,7 +80,6 @@ export class UserService {
 
   private extractClaims(token: string) {
     var claims = this.decodeJwt(token);
-    console.log(claims);
     var nameIdentifier = Number(
       claims[
         'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'

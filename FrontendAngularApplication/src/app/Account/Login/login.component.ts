@@ -12,7 +12,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment.development';
 import { ScriptLoaderService } from '../../Services/ScriptLoader';
 import { SnackbarService } from '../../Common/Alerts/Snackbar/SnackbarService';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { UserService } from '../../Services/UserService';
 declare const grecaptcha: any;
@@ -34,6 +34,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(
     private _accountSectionMetaData: AccountSectionMetaData,
     private _pageTitle: Title,
+    private _activatedRoute: ActivatedRoute,
     private _httpClient: HttpClient,
     private _scriptLoader: ScriptLoaderService,
     public snackbarService: SnackbarService,
@@ -65,6 +66,12 @@ export class LoginComponent implements OnInit, OnDestroy {
           (response) => {
             this._userService.onSetAuthCookie((response as any).token);
             this.isFormLoading.set(false);
+            const returnUrl =
+              this._activatedRoute.snapshot.queryParams['returnUrl'];
+            if (returnUrl) {
+              this._router.navigateByUrl(returnUrl);
+              return;
+            }
             this._router.navigateByUrl('/');
           },
           (error) => {

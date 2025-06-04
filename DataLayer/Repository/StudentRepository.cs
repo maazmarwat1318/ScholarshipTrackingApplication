@@ -69,11 +69,11 @@ namespace DataLayer.Repository
             }
         }
 
-        public async Task<StudentResponse?> GetStudentById(int id)
+        public async Task<StudentResponseWithDegree?> GetStudentById(int id)
         {
             try
             {
-                var student = await _dbContext.Students.Include(student => student.StudentNavigation).Where(student => student.Id == id).Select(student =>
+                var student = await _dbContext.Students.Include(student => student.StudentNavigation).Include(student => student.Degree).Where(student => student.Id == id).Select(student =>
                         _mapper.Map<StudentResponseWithDegree>(new Tuple<DataLayer.Entity.Student, DataLayer.Entity.User, DataLayer.Entity.Degree?>(student, student.StudentNavigation, student.Degree))).FirstOrDefaultAsync();
                 return student;
             }

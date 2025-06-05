@@ -25,6 +25,15 @@ export class UserService {
 
   onDeleteAuthCookie = async () => {
     this._cookieService.delete(Cookies.AuthToken);
+    this.userEmail = null;
+    this.userName = null;
+    this.userId = null;
+    this.userRole = null;
+    this.authToken = null;
+  };
+
+  onLogout = async () => {
+    this.onDeleteAuthCookie();
   };
 
   onSetAuthCookie = (cookie: string) => {

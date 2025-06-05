@@ -29,7 +29,7 @@
         />
         <p class="navbar-brand mb-0">{{ title() }}</p>
         <div class="d-flex justify-content-end flex-grow-1 gap-2">
-          <button class="btn btn-danger">Log out</button>
+          <button (click)="onLogout()" class="btn btn-danger">Log out</button>
           <button
             class="btn btn-outline-primary d-md-none"
             type="button"

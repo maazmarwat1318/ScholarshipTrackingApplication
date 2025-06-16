@@ -20,21 +20,17 @@ namespace ApplicationLayer.Service
     {
         private readonly IJwtService _jwtService;
         private readonly IUserRepository _userRepo;
-        private readonly IStudentRepository _studentRepo;
-        private readonly IScholarshipModeratorRepository _scholarshipModeratorRepo;
         private readonly ICrypterService _crypterService;
         private readonly IEmailService _emailService;
         private readonly ICaptchaVerificationService _captchaService;
 
-        public AccountService(IJwtService jwtService, IUserRepository userRepo, IStudentRepository studentRepo, IScholarshipModeratorRepository scholarshipModeratorRepo, ICrypterService crypterService, IEmailService emailService, ICaptchaVerificationService captchaService)
+        public AccountService(IJwtService jwtService, IUserRepository userRepo, ICrypterService crypterService, IEmailService emailService, ICaptchaVerificationService captchaService)
         {
             _jwtService = jwtService;
             _userRepo = userRepo;
             _crypterService = crypterService;
             _emailService = emailService;
             _captchaService = captchaService;
-            _studentRepo = studentRepo;
-            _scholarshipModeratorRepo = scholarshipModeratorRepo;
         }
 
         public async Task<Response<LogInResponse>> Login(LogInRequest request)
@@ -52,15 +48,18 @@ namespace ApplicationLayer.Service
 
             if(user.Password == "00000000")
             {
-                 var response = await ForgotPassword(new ForgotPasswordRequest() { Email = user.Email });
-                if(response.IsSuccess)
+                var token = _jwtService.GenerateResetPasswordToken(user.Id);
+
+                try
                 {
-                    return Response<LogInResponse>.Failure(AccountErrorHelper.AccountNotActivatedError()); 
-                } else
+                    await _emailService.SendPasswordResetEmail(user.FirstName, user.Email, token);
+                }
+                catch (Exception)
                 {
                     return Response<LogInResponse>.Failure(CommonErrorHelper.ServerError());
                 }
-               
+                return Response<LogInResponse>.Failure(AccountErrorHelper.AccountNotActivatedError());
+
             }
 
             if (!_crypterService.CompareHash(request.Password, user.Password))

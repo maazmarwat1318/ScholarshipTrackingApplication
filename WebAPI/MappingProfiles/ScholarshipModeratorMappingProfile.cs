@@ -1,9 +1,5 @@
-﻿using DomainLayer.DTO.Student;
-using AutoMapper;
-using DataLayer.Entity;
-using DomainLayer.Enums;
+﻿using AutoMapper;
 using WebAPI.ViewModels.ScholarshipModerator;
-using WebAPI.ViewModels.Student;
 using DomainLayer.DTO.ScholarshipModerator;
 
 namespace WebAPI.MappingProfiles

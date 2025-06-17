@@ -1,6 +1,5 @@
 
 using MVCPresentationLayer.Configuration;
-using MVCPresentationLayer.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 

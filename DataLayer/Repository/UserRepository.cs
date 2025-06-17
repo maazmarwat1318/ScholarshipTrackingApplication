@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using Contracts.DataLayer;
-using DataLayer.Entity;
 using DomainLayer.Common;
-using DomainLayer.Entity;
 using DomainLayer.Errors.AuthenticationErrors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;

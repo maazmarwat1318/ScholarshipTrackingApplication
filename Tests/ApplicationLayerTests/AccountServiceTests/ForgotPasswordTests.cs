@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ApplicationLayer.Service;
-using Contracts.ApplicationLayer.Interface;
+﻿using ApplicationLayer.Service;
 using Contracts.DataLayer;
 using Contracts.InfrastructureLayer;
-using DomainLayer.Common;
 using DomainLayer.DTO.Authentication;
 using DomainLayer.DTO.Common;
 using DomainLayer.Entity;
 using DomainLayer.Enums;
 using DomainLayer.Errors.AuthenticationErrors;
 using Moq;
-using NUnit.Framework.Constraints;
 
 namespace Tests.ApplicationLayerTests.AccountServiceTests
 {
@@ -28,7 +20,7 @@ namespace Tests.ApplicationLayerTests.AccountServiceTests
         private Mock<IEmailService> _emailService;
         private Mock<ICaptchaVerificationService> _captchaService;
 
-        private Mock<AccountService> _accountService;
+        private AccountService _accountService;
 
 
 
@@ -44,16 +36,12 @@ namespace Tests.ApplicationLayerTests.AccountServiceTests
             _emailService = new Mock<IEmailService>();
             _captchaService = new Mock<ICaptchaVerificationService>();
 
-            // Setting up Captha Service
-            _captchaService.Setup(ser => ser.VerifyTokenAsync("Invalid")).ReturnsAsync(false);
-            _captchaService.Setup(ser => ser.VerifyTokenAsync("Valid")).ReturnsAsync(true);
-
             // Setting up User Repo
             _userRepo.Setup(ser => ser.GetByEmailAsync("notfound@g.c")).ReturnsAsync((User?)null);
             _userRepo.Setup(ser => ser.GetByEmailAsync("foundunverified@g.c")).ReturnsAsync(UnverifiedUser);
             _userRepo.Setup(ser => ser.GetByEmailAsync("foundverified@g.c")).ReturnsAsync(VerifiedUser);
 
-            _accountService = new Mock<AccountService>(_jwtService.Object, _userRepo.Object, _crypterService.Object, _emailService.Object, _captchaService.Object) { CallBase = true };
+            _accountService = new AccountService(_jwtService.Object, _userRepo.Object, _crypterService.Object, _emailService.Object, _captchaService.Object) ;
 
 
         }
@@ -128,11 +116,6 @@ namespace Tests.ApplicationLayerTests.AccountServiceTests
                 Assert.That(result.Value, Is.TypeOf<MessageResponse>());
             });
         }
-
-
-
-
-
 
         [TearDown] public void CLeanUp() { }
     }

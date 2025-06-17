@@ -1,6 +1,4 @@
-﻿using DomainLayer.Common;
-using DomainLayer.Entity;
-
+﻿
 namespace Contracts.DataLayer
 {
     public interface IDegreeRepository

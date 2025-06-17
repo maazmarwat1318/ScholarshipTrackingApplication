@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using DomainLayer.DTO.ScholarshipModerator;
-using DomainLayer.DTO.Student;
 
 namespace MVCPresentationLayer.ViewModels.ScholarshipModerator
 {

@@ -1,6 +1,5 @@
 ﻿namespace WebAPI.Extensions
 {
-    using DomainLayer.Errors;
     using Microsoft.AspNetCore.Mvc.ModelBinding;
     using System.Linq;
 

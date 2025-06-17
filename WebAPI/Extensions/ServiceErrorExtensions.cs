@@ -1,5 +1,4 @@
 ﻿using DomainLayer.Errors;
-using Microsoft.AspNetCore.Http;
 
 namespace WebAPI.Extensions
 {

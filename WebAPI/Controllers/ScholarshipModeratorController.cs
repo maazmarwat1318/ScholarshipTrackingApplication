@@ -4,15 +4,10 @@ using DomainLayer.Entity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using DomainLayer.DTO.ScholarshipModerator;
-using System.Threading.Tasks;
-using ApplicationLayer.Service;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using WebAPI.Controllers;
 using WebAPI.Extensions;
 using WebAPI.ViewModels.ScholarshipModerator;
 using DomainLayer.Errors;
-using DomainLayer.DTO.Student;
-using WebAPI.ViewModels.Student;
+
 
 namespace WebAPI.Controllers
 {

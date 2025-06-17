@@ -1,19 +1,13 @@
 ﻿using Contracts.ApplicationLayer.Interface;
 using AutoMapper;
 using DomainLayer.Entity;
-using DomainLayer.Enums;
-using InfrastructureLayer.Options;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Options;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using MVCPresentationLayer.Extensions;
 using MVCPresentationLayer.Helpers;
-using MVCPresentationLayer.ViewModels.ScholarshipModerator;
 using MVCPresentationLayer.ViewModels.Student;
 using DomainLayer.DTO.Student;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace MVCPresentationLayer.Controllers
 {

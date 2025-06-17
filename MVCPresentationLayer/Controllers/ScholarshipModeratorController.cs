@@ -7,10 +7,7 @@ using MVCPresentationLayer.Extensions;
 using MVCPresentationLayer.Helpers;
 using MVCPresentationLayer.ViewModels.ScholarshipModerator;
 using DomainLayer.DTO.ScholarshipModerator;
-using System.Threading.Tasks;
-using ApplicationLayer.Service;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using MVCPresentationLayer.ViewModels.Student;
+
 
 namespace MVCPresentationLayer.Controllers
 {

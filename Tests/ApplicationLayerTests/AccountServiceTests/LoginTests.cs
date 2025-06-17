@@ -1,21 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ApplicationLayer.Service;
-using Contracts.ApplicationLayer.Interface;
+﻿using ApplicationLayer.Service;
 using Contracts.DataLayer;
 using Contracts.InfrastructureLayer;
-using DomainLayer.Common;
 using DomainLayer.DTO.Authentication;
-using DomainLayer.DTO.Common;
 using DomainLayer.Entity;
 using DomainLayer.Enums;
 using DomainLayer.Errors;
 using DomainLayer.Errors.AuthenticationErrors;
 using Moq;
-using NUnit.Framework.Constraints;
 
 namespace Tests.ApplicationLayerTests.AccountServiceTests
 {
@@ -137,6 +128,83 @@ namespace Tests.ApplicationLayerTests.AccountServiceTests
                 Assert.That(result.ServiceError, Is.Not.Null);
                 Assert.That(result.ServiceError?.ErrorCode, Is.EqualTo(expectedErrorCode));
             });
+
+            //Clean up
+            _emailService.Reset();
+            _jwtService.Reset();
+
+        }
+
+        [TestCase("Valid", "foundverified@g.c", "00000000")]
+        public async Task VerifiedValidUser_ReturnsToken(string captchaToken, string email, string password)
+        {
+            // Arrange
+
+            var expectedToken = "dummy-token";
+
+            var request = new LogInRequest
+            {
+                CaptchaToken = captchaToken,
+                Email = email,
+                Password = password
+            };
+
+            var verifiedUser = VerifiedUser;
+
+            _jwtService.Setup(j => j.GenerateAccessToken(verifiedUser.Id, verifiedUser.FirstName, verifiedUser.Email, verifiedUser.Role)).Returns(expectedToken);
+            _crypterService.Setup(ser => ser.CompareHash(password, verifiedUser.Password)).Returns(true);
+
+            // Act
+            var result = await _accountService.Login(request);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.IsSuccess, Is.True);
+                Assert.That(result.ServiceError, Is.Null);
+                Assert.That(result.Value, Is.TypeOf<LogInResponse>());
+                Assert.That(result.Value?.Token, Is.EqualTo(expectedToken));
+            });
+
+            //Clean up
+            _crypterService.Reset();
+            _jwtService.Reset();
+
+        }
+
+        [TestCase("Valid", "foundverified@g.c", "12345678")]
+        public async Task VerifiedValidUser_InvalidPassword_ReturnsFailure(string captchaToken, string email, string password)
+        {
+            // Arrange
+
+            var expectedErrorCode = AccountErrorHelper.InvalidCredentialsCode;
+
+            var request = new LogInRequest
+            {
+                CaptchaToken = captchaToken,
+                Email = email,
+                Password = password
+            };
+
+            var verifiedUser = VerifiedUser;
+
+            _crypterService.Setup(ser => ser.CompareHash(password, verifiedUser.Password)).Returns(false);
+            
+            // Act
+            var result = await _accountService.Login(request);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.IsSuccess, Is.False);
+                Assert.That(result.ServiceError, Is.Not.Null);
+                Assert.That(result.ServiceError?.ErrorCode, Is.EqualTo(expectedErrorCode));
+                Assert.That(_jwtService.Invocations, Is.Empty);
+            });
+
+            //Clean up
+            _crypterService.Reset();
+            _jwtService.Reset();
 
         }
 

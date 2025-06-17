@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Contracts.ApplicationLayer.Interface;
+﻿using Contracts.ApplicationLayer.Interface;
 using Contracts.DataLayer;
-using Contracts.InfrastructureLayer;
 using DomainLayer.Common;
 using DomainLayer.DTO.Common;
-using DomainLayer.DTO.ScholarshipModerator;
 using DomainLayer.DTO.Student;
 using DomainLayer.Entity;
 using DomainLayer.Errors.AuthenticationErrors;

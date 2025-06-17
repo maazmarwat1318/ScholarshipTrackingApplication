@@ -1,11 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using DomainLayer.DTO.Authentication;
+﻿using DomainLayer.DTO.Authentication;
 using Contracts.ApplicationLayer.Interface;
-using DomainLayer.Common;
 using DomainLayer.Errors;
-using InfrastructureLayer.Options;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using WebAPI.Extensions;
 using WebAPI.ViewModels.Account;
 using AutoMapper;

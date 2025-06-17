@@ -1,6 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using DomainLayer.DTO.ScholarshipModerator;
-using DomainLayer.DTO.Student;
 
 namespace WebAPI.ViewModels.ScholarshipModerator
 {

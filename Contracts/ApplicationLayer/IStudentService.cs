@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DomainLayer.Common;
-using DomainLayer.DTO.Authentication;
+﻿using DomainLayer.Common;
 using DomainLayer.DTO.Common;
 using DomainLayer.DTO.Student;
 using DomainLayer.Entity;

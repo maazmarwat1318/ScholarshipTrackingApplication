@@ -1,14 +1,9 @@
 ﻿using Contracts.ApplicationLayer.Interface;
 using AutoMapper;
 using DomainLayer.Entity;
-using DomainLayer.Enums;
-using InfrastructureLayer.Options;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Options;
 using DomainLayer.DTO.Student;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using WebAPI.ViewModels.Student;
 using WebAPI.Extensions;
 using DomainLayer.Errors;

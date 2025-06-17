@@ -1,18 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DomainLayer.Common;
-using DomainLayer.DTO.Authentication;
+﻿using DomainLayer.Common;
 using Contracts.ApplicationLayer.Interface;
 using Contracts.DataLayer;
 using Contracts.InfrastructureLayer;
 using DomainLayer.Entity;
-using DomainLayer.Errors.AuthenticationErrors;
-using DomainLayer.DTO.Common;
-using System.Security.Claims;
-using DomainLayer.DTO.Degree;
 
 namespace ApplicationLayer.Service
 {

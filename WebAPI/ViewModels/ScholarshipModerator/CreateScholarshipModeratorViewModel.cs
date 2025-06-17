@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using DataLayer.Entity;
 using DomainLayer.Enums;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WebAPI.ViewModels.ScholarshipModerator
 {

@@ -1,10 +1,4 @@
-﻿using DomainLayer.DTO.Student;
-using AutoMapper;
-using DataLayer.Entity;
-using DomainLayer.Enums;
-using WebAPI.ViewModels.ScholarshipModerator;
-using WebAPI.ViewModels.Student;
-using DomainLayer.DTO.ScholarshipModerator;
+﻿using AutoMapper;
 using WebAPI.ViewModels.Account;
 using DomainLayer.DTO.Authentication;
 

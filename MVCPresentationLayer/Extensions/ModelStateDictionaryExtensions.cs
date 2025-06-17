@@ -1,6 +1,5 @@
 ﻿namespace MVCPresentationLayer.Extensions
 {
-    using DomainLayer.Errors;
     using Microsoft.AspNetCore.Mvc.ModelBinding;
     using System.Linq;
 

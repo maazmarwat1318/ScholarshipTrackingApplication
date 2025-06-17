@@ -1,10 +1,5 @@
-﻿using DomainLayer.DTO.Student;
-using AutoMapper;
-using DataLayer.Entity;
-using DomainLayer.Enums;
-using MVCPresentationLayer.ViewModels.ScholarshipModerator;
-using MVCPresentationLayer.ViewModels.Student;
-using DomainLayer.DTO.ScholarshipModerator;
+﻿using AutoMapper;
+
 
 namespace MVCPresentationLayer.MappingProfiles
 {

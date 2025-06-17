@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
 using DataLayer.Entity;
 using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
 
 namespace DataLayer;
 

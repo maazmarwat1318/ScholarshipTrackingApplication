@@ -1,5 +1,4 @@
 ﻿using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Filters;
 using WebAPI.Swagger;
 
 namespace WebAPI.Configuration

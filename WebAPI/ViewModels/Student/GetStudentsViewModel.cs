@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using DomainLayer.DTO.Student;
 
 namespace WebAPI.ViewModels.Student
 {

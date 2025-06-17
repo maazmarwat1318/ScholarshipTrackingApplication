@@ -1,6 +1,4 @@
 ﻿using System.Text;
-using Microsoft.EntityFrameworkCore;
-using DataLayer;
 using InfrastructureLayer.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

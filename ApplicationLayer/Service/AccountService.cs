@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DomainLayer.Common;
+﻿using DomainLayer.Common;
 using DomainLayer.DTO.Authentication;
 using Contracts.ApplicationLayer.Interface;
 using Contracts.DataLayer;
 using Contracts.InfrastructureLayer;
-using DomainLayer.Entity;
 using DomainLayer.Errors.AuthenticationErrors;
 using DomainLayer.DTO.Common;
 using System.Security.Claims;
@@ -103,7 +97,7 @@ namespace ApplicationLayer.Service
             var id = _jwtService.GetClaimValue<int?>(tokenValidationResult.Value!, ClaimTypes.NameIdentifier);
             if(id == null)
             {
-                Response<MessageResponse>.Failure(AccountErrorHelper.TokenInvalidError());
+               return Response<MessageResponse>.Failure(AccountErrorHelper.TokenInvalidError());
             }
             var newPasswordHashed = _crypterService.EncryptString(request.Password);
             await _userRepo.UpdateUserPasswordAsync((int)id!, newPasswordHashed);

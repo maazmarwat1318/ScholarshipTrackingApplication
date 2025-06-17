@@ -1,5 +1,4 @@
-﻿using DomainLayer.Common;
-using DomainLayer.Entity;
+﻿using DomainLayer.Entity;
 
 namespace Contracts.DataLayer
 {

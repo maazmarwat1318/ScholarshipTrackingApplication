@@ -1,6 +1,4 @@
-﻿using System;
-
-using DomainLayer.DTO.Account;
+﻿
 
 namespace DomainLayer.DTO.Student
 {

@@ -1,5 +1,4 @@
 ﻿using DomainLayer.Common;
-using DomainLayer.DTO.ScholarshipModerator;
 using DomainLayer.DTO.Student;
 using DomainLayer.Entity;
 

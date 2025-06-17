@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using Microsoft.OpenApi.Models;
 using WebAPI.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
